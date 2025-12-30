@@ -60,3 +60,7 @@ temp/
 # 测试文件
 *_test.go
 coverage.txt
+
+# OSINT 工具文档
+*OSINT*.md
+osint/
