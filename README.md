@@ -2,6 +2,8 @@
 
 一个 Go 语言实现的 AI 代理服务，支持多平台（Claude、OpenAI、Gemini）账户管理和统一 API 接口。
 
+> **本项目完全使用 GLM 开发**，GLM 配合 Claude Code 完成了本项目 95% 的开发工作。感谢 AI 辅助编程工具让开发效率大幅提升！
+
 [![QQ群](https://img.shields.io/badge/QQ群-加入交流-orange?logo=tencentqq&style=flat-square)](https://qm.qq.com/q/iJ4bHLlMEa)
 
 ## 联系交流
