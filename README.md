@@ -13,16 +13,6 @@
 - **GitHub Issues**：[提交问题](https://github.com/suiyuebaobao/go-proxy-pro/issues)
 - **GitHub Discussions**：[参与讨论](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
 
-## 在线演示
-
-**演示站地址**: https://www.coordcode.com
-
-**演示账号**:
-- 用户名: `admin`
-- 密码: `admin123`
-
-> 演示站已配置 SSL 证书，支持 HTTPS 安全访问。你可以登录体验完整功能。
-
 ## 功能特性
 
 - **多平台支持**：Claude (Official/Console/CCR/Bedrock)、OpenAI (API/Azure/Responses)、Gemini
