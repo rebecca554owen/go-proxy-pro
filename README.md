@@ -6,6 +6,7 @@
 
 ## 联系交流
 
+- **作者微信**：suiyue_creation
 - **QQ 交流群**：[点击加入群聊【go-proxy-pro】](https://qm.qq.com/q/iJ4bHLlMEa) （或访问网站主页扫描二维码）
 - **GitHub Issues**：[提交问题](https://github.com/suiyuebaobao/go-proxy-pro/issues)
 - **GitHub Discussions**：[参与讨论](https://github.com/suiyuebaobao/go-proxy-pro/discussions)

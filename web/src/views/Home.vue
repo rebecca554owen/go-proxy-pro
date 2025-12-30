@@ -91,6 +91,10 @@ export OPENAI_API_KEY="你的API_Key"</code></pre>
     <footer class="home-footer">
       <div class="contact-section">
         <h3>联系我们</h3>
+        <p class="wechat">
+          <i class="fa-brands fa-weixin"></i>
+          作者微信：suiyue_creation
+        </p>
         <a href="https://qm.qq.com/q/iJ4bHLlMEa" target="_blank" class="qq-link">
           <i class="fa-brands fa-qq"></i>
           点击加入 QQ 交流群【go-proxy-pro】
@@ -338,6 +342,21 @@ const copyText = (text) => {
 .contact-section h3 {
   color: white;
   margin-bottom: 1rem;
+}
+
+.wechat {
+  color: #9ca3af;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wechat i {
+  color: #07c160;
+  font-size: 1.25rem;
 }
 
 .qq-link {
