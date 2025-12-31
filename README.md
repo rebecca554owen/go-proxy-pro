@@ -1,10 +1,8 @@
 <div align="center">
 
-  ![Go-AIProxy Logo](web/public/favicon.svg)
-
   # Go-AIProxy
 
-  ### 🚀 Enterprise-Grade AI API Proxy Service
+  ### 🚀 企业级 AI API 代理服务
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
@@ -12,131 +10,140 @@
   [![GitHub Stars](https://img.shields.io/github/stars/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/stargazers)
   [![GitHub Forks](https://img.shields.io/github/forks/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/network/members)
 
-  **A unified API gateway for multiple AI platforms** - Claude, OpenAI, Gemini, and more
+  **多平台 AI API 统一网关** - 支持 Claude、OpenAI、Gemini 等
 
-  [Features](#-features) • [Quick Start](#-quick-start) • [Screenshots](#-screenshots) • [Documentation](#-documentation) • [Contributing](#-contributing)
+  [功能特性](#-功能特性) • [快速开始](#-快速开始) • [系统截图](#-系统截图) • [文档](#-文档)
 
-  [**简体中文**](README.zh-CN.md) | **English**
+  **简体中文** | [**English**](README.en.md)
 
 </div>
 
 ---
 
-## ✨ Features
+## 📞 联系交流
 
-### 🎯 Multi-Platform Support
-- **Claude**: Official, Console, CCR, Bedrock
-- **OpenAI**: API, Azure, Responses API
-- **Gemini**: OAuth & API Key modes
-
-### 🔧 Powerful Features
-- **Account Pool Management**: Load balancing, failover, rotation
-- **User API Keys**: Generate dedicated API keys for users
-- **Permission Control**: Platform and model-level access control
-- **Usage Statistics**: Request count, token consumption, cost tracking
-- **OpenAI Responses API**: Support for Codex CLI and Claude Code
-- **Health Monitoring**: Automatic account health checks and recovery
-
-### 🛡️ Enterprise Ready
-- JWT authentication for admin panel
-- API key authentication for proxy API
-- Request logging and audit trails
-- Rate limiting and concurrency control
-- HTTPS/SSL support with Nginx
+- **作者微信**：suiyue_creation
+- **QQ 交流群**：[点击加入群聊【go-proxy-pro】](https://qm.qq.com/q/iJ4bHLlMEa)
+- **GitHub Issues**：[提交问题](https://github.com/suiyuebaobao/go-proxy-pro/issues)
+- **GitHub Discussions**：[参与讨论](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
 
 ---
 
-## 🎸 Screenshots
+## ✨ 功能特性
 
-### Login Page
-![Login Page](screenshots/screenshot-01.png)
+### 🎯 多平台支持
+- **Claude**: Official、Console、CCR、Bedrock
+- **OpenAI**: API、Azure、Responses API
+- **Gemini**: OAuth 和 API Key 模式
 
-### System Monitoring
-![System Monitoring](screenshots/screenshot-02.png)
+### 🔧 强大功能
+- **账户池管理**: 负载均衡、故障转移、轮询调度
+- **用户 API Key**: 用户可生成专属 API Key
+- **权限控制**: 平台和模型级别的访问权限控制
+- **使用统计**: 请求次数、Token 消耗、费用统计
+- **OpenAI Responses API**: 支持 Codex CLI 和 Claude Code
+- **健康监控**: 自动账户健康检查和恢复
 
-### Account Management
-![Account Management](screenshots/screenshot-03.png)
-
-### Model Management
-![Model Management](screenshots/screenshot-04.png)
-
-### User Management
-![User Management](screenshots/screenshot-05.png)
-
-### API Key Management
-![API Key Management](screenshots/screenshot-06.png)
-
-### Request Logs
-![Request Logs](screenshots/screenshot-07.png)
-
-### Usage Statistics
-![Usage Statistics](screenshots/screenshot-08.png)
-
-👉 [View More Screenshots](screenshots/)
+### 🛡️ 企业级特性
+- JWT 认证管理后台
+- API Key 认证代理 API
+- 请求日志和审计追踪
+- 限流和并发控制
+- Nginx HTTPS/SSL 支持
 
 ---
 
-## 🚀 Quick Start
+## 🎸 系统截图
 
-### Prerequisites
+### 登录页面
+![登录页面](screenshots/screenshot-01.png)
+
+### 系统监控
+![系统监控](screenshots/screenshot-02.png)
+
+### 账户管理
+![账户管理](screenshots/screenshot-03.png)
+
+### 模型管理
+![模型管理](screenshots/screenshot-04.png)
+
+### 用户管理
+![用户管理](screenshots/screenshot-05.png)
+
+### API Key 管理
+![API Key 管理](screenshots/screenshot-06.png)
+
+### 请求日志
+![请求日志](screenshots/screenshot-07.png)
+
+### 使用统计
+![使用统计](screenshots/screenshot-08.png)
+
+👉 [查看更多截图](screenshots/)
+
+---
+
+## 🚀 快速开始
+
+### 环境要求
 
 - **Go** 1.21+
 - **MySQL** 8.0+
-- **Node.js** 18+ (for frontend development)
+- **Node.js** 18+（前端开发）
 
-### Option 1: Docker Deploy (Recommended)
+### 方式一：Docker 部署（推荐）
 
 ```bash
-# Clone the repository
+# 克隆仓库
 git clone https://github.com/suiyuebaobao/go-proxy-pro.git
 cd go-proxy-pro/go-aiproxy
 
-# Start services (MySQL + Application)
+# 启动服务（MySQL + 应用）
 docker-compose up -d
 
-# View logs
+# 查看日志
 docker-compose logs -f
 
-# Stop services
+# 停止服务
 docker-compose down
 ```
 
-**Access**:
-- 🌐 Web UI: http://localhost:8080
-- 📊 API: http://localhost:8080/claude/v1/messages
-- 🗄️ MySQL: localhost:3306
+**访问地址**:
+- 🌐 Web 管理界面: http://localhost:8080
+- 📊 API 接口: http://localhost:8080/claude/v1/messages
+- 🗄️ MySQL 数据库: localhost:3306
 
-**Default Admin Account**:
-- Username: `admin`
-- Password: `admin123`
+**默认管理员账号**:
+- 用户名: `admin`
+- 密码: `admin123`
 
-⚠️ **Change the default password after first login!**
+⚠️ **首次登录后请及时修改密码！**
 
-### Option 2: Build from Source
+### 方式二：源码编译
 
 ```bash
-# Build backend
+# 编译后端
 go build -o aiproxy ./cmd/server
 
-# Run
+# 运行
 ./aiproxy
 ```
 
-The service listens on port `8080` by default.
+服务默认监听 `8080` 端口。
 
 ---
 
-## 📚 API Usage
+## 📚 API 使用指南
 
-### Base URLs
+### Base URL 配置
 
-| Platform | Base URL | Example Endpoint |
-|----------|----------|------------------|
-| Claude | `http://domain/claude/` | `/claude/v1/messages` |
-| OpenAI | `http://domain/openai/` | `/openai/v1/chat/completions` |
-| Gemini | `http://domain/gemini/` | `/gemini/v1/chat` |
+| 平台 | Base URL | 完整端点示例 |
+|------|----------|--------------|
+| Claude | `http://域名/claude/` | `/claude/v1/messages` |
+| OpenAI | `http://域名/openai/` | `/openai/v1/chat/completions` |
+| Gemini | `http://域名/gemini/` | `/gemini/v1/chat` |
 
-### Example: Claude API
+### 示例：Claude API
 
 ```bash
 curl http://localhost:8080/claude/v1/messages \
@@ -144,12 +151,12 @@ curl http://localhost:8080/claude/v1/messages \
   -H "Content-Type: application/json" \
   -d '{
     "model": "claude-sonnet-4-20250514",
-    "messages": [{"role": "user", "content": "Hello!"}],
+    "messages": [{"role": "user", "content": "你好！"}],
     "max_tokens": 1024
   }'
 ```
 
-### Example: OpenAI API
+### 示例：OpenAI API
 
 ```bash
 curl http://localhost:8080/openai/v1/chat/completions \
@@ -157,11 +164,11 @@ curl http://localhost:8080/openai/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4",
-    "messages": [{"role": "user", "content": "Hello!"}]
+    "messages": [{"role": "user", "content": "你好！"}]
   }'
 ```
 
-### Example: OpenAI Responses API (Codex CLI)
+### 示例：OpenAI Responses API (Codex CLI)
 
 ```bash
 curl http://localhost:8080/responses \
@@ -169,122 +176,113 @@ curl http://localhost:8080/responses \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-5.1-codex-max",
-    "input": "Write a hello world function"
+    "input": "写一个 Hello World 函数"
   }'
 ```
 
 ---
 
-## 📁 Project Structure
+## 📁 项目结构
 
 ```
 go-aiproxy/
-├── cmd/server/          # Application entry point
+├── cmd/server/          # 程序入口
 ├── internal/
-│   ├── handler/         # HTTP handlers
-│   ├── middleware/      # JWT, API Key auth, etc.
-│   ├── model/           # Data models
-│   ├── repository/      # Data access layer
-│   ├── service/         # Business logic
-│   └── proxy/           # Proxy core
-│       ├── adapter/     # Platform adapters
-│       └── scheduler/   # Account scheduler
-├── pkg/                 # Common utilities
-└── web/                 # Vue 3 frontend
+│   ├── handler/         # HTTP 处理器
+│   ├── middleware/      # 中间件（JWT、API Key 认证等）
+│   ├── model/           # 数据模型
+│   ├── repository/      # 数据访问层
+│   ├── service/         # 业务逻辑
+│   └── proxy/           # 代理核心
+│       ├── adapter/     # 平台适配器
+│       └── scheduler/   # 账户调度器
+├── pkg/                 # 公共工具
+└── web/                 # Vue 3 前端
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ 技术栈
 
-### Backend
-- **Go** 1.21+ with **Gin** framework
-- **MySQL** 8.0+ with **GORM**
-- In-memory caching (sync.Map)
-- JWT + API Key authentication
+### 后端
+- **Go** 1.21+ + **Gin** 框架
+- **MySQL** 8.0+ + **GORM**
+- 内存缓存（sync.Map）
+- JWT + API Key 双重认证
 
-### Frontend
-- **Vue** 3.4+ (Composition API)
+### 前端
+- **Vue** 3.4+（Composition API）
 - **Vite** 5.x
 - **Element Plus** 2.6+
-- **Alova** 3.x (HTTP client)
+- **Alova** 3.x（HTTP 客户端）
 - **Font Awesome** 6.x
 
 ---
 
-## 🔧 Configuration
+## 🔧 配置说明
 
-### Environment Variables
+### 环境变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `8080` | Service port |
-| `DB_HOST` | `localhost` | MySQL host |
-| `DB_PORT` | `3306` | MySQL port |
-| `DB_USER` | `root` | MySQL username |
-| `DB_PASSWORD` | - | MySQL password |
-| `DB_NAME` | `aiproxy` | Database name |
+| 变量名 | 默认值 | 说明 |
+|--------|--------|------|
+| `PORT` | `8080` | 服务端口 |
+| `DB_HOST` | `localhost` | MySQL 主机 |
+| `DB_PORT` | `3306` | MySQL 端口 |
+| `DB_USER` | `root` | MySQL 用户名 |
+| `DB_PASSWORD` | - | MySQL 密码 |
+| `DB_NAME` | `aiproxy` | 数据库名 |
 
-### Docker Compose Variables
+### Docker Compose 变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MYSQL_ROOT_PASSWORD` | `go-aiproxy-root` | MySQL root password |
-| `MYSQL_DATABASE` | `aiproxy` | Database name |
-| `MYSQL_USER` | `aiproxy` | MySQL user |
-| `MYSQL_PASSWORD` | `aiproxy-password` | MySQL password |
-| `JWT_SECRET` | `change-in-production` | JWT secret key |
+| 变量名 | 默认值 | 说明 |
+|--------|--------|------|
+| `MYSQL_ROOT_PASSWORD` | `go-aiproxy-root` | MySQL root 密码 |
+| `MYSQL_DATABASE` | `aiproxy` | 数据库名 |
+| `MYSQL_USER` | `aiproxy` | MySQL 用户名 |
+| `MYSQL_PASSWORD` | `aiproxy-password` | MySQL 密码 |
+| `JWT_SECRET` | `change-in-production` | JWT 密钥 |
 
-⚠️ **Change all default passwords in production!**
-
----
-
-## 📖 Documentation
-
-- [Development Guide](docs/README.md) - Development setup and guidelines
-- [API Documentation](docs/接口文档/) - API reference
-- [Architecture](docs/架构设计/) - System architecture
-- [Troubleshooting](docs/故障排查手册.md) - Common issues and solutions
+⚠️ **生产环境请修改所有默认密码！**
 
 ---
 
-## 🤝 Contributing
+## 📖 文档
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- [开发指南](docs/README.md) - 开发环境配置和规范
+- [API 文档](docs/接口文档/) - API 接口参考
+- [架构设计](docs/架构设计/) - 系统架构说明
+- [故障排查](docs/故障排查手册.md) - 常见问题和解决方案
 
 ---
 
-## 📞 Contact & Community
+## 🤝 贡献指南
 
-- **Author WeChat**: suiyue_creation
-- **QQ Group**: [Join go-proxy-pro](https://qm.qq.com/q/iJ4bHLlMEa)
-- **GitHub Issues**: [Submit issues](https://github.com/suiyuebaobao/go-proxy-pro/issues)
-- **GitHub Discussions**: [Join discussions](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
+欢迎贡献代码！请随时提交 Pull Request。
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
 
 ---
 
-## 📄 License
+## 📄 开源协议
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+本项目采用 MIT 协议开源 - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
 ## ⭐ Star History
 
-If you find this project helpful, please consider giving it a star! ⭐
+如果你觉得这个项目有帮助，请给它一个 Star！⭐
 
 <div align="center">
 
-  **Made with ❤️ by suiyuebaobao**
+  **由 suiyueobao 用 ❤️ 打造**
 
-  **95% of this project was developed using GLM with Claude Code**
+  **本项目 95% 使用 GLM 配合 Claude Code 开发完成**
 
-  [⬆ Back to Top](#go-aiproxy)
+  [⬆ 返回顶部](#go-aiproxy)
 
 </div>
