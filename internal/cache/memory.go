@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/config"
+	"aiproxy/internal/config"
 )
 
 // ==================== 会话存储 ====================

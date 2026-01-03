@@ -14,8 +14,8 @@ package service
 import (
 	"context"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 
 	"gorm.io/gorm"
 )

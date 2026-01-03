@@ -21,11 +21,11 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/proxy/adapter"
-	"go-aiproxy/internal/proxy/scheduler"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/proxy/adapter"
+	"aiproxy/internal/proxy/scheduler"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 // AccountHealthCheckService 账号健康检查服务

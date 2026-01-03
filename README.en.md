@@ -7,8 +7,8 @@
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
   [![Vue Version](https://img.shields.io/badge/Vue-3.4+-4FC08D?logo=vue.js)](https://vuejs.org/)
-  [![GitHub Stars](https://img.shields.io/github/stars/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/stargazers)
-  [![GitHub Forks](https://img.shields.io/github/forks/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/network/members)
+  [![GitHub Stars](https://img.shields.io/github/stars/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/stargazers)
+  [![GitHub Forks](https://img.shields.io/github/forks/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/network/members)
 
   **A unified API gateway for multiple AI platforms** - Claude, OpenAI, Gemini, and more
 
@@ -24,8 +24,8 @@
 
 - **Author WeChat**: suiyue_creation
 - **QQ Group**: [Join go-proxy-pro](https://qm.qq.com/q/iJ4bHLlMEa)
-- **GitHub Issues**: [Submit issues](https://github.com/suiyuebaobao/go-proxy-pro/issues)
-- **GitHub Discussions**: [Join discussions](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
+- **GitHub Issues**: [Submit issues](https://github.com/rebecca554owen/aiproxy/issues)
+- **GitHub Discussions**: [Join discussions](https://github.com/rebecca554owen/aiproxy/discussions)
 
 ---
 
@@ -95,8 +95,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/suiyuebaobao/go-proxy-pro.git
-cd go-proxy-pro/go-aiproxy
+git clone https://github.com/rebecca554owen/aiproxy.git
+cd aiproxy
 
 # Start services (MySQL + Application)
 docker-compose up -d

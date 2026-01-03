@@ -18,9 +18,9 @@ import (
 	"runtime"
 	"time"
 
-	"go-aiproxy/internal/cache"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/cache"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"

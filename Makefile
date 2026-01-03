@@ -2,7 +2,7 @@
 
 # 仅构建后端
 build:
-	go build -o bin/server ./cmd/server
+	go build -ldflags "-s -w" -o bin/server ./cmd/server
 
 # 仅运行后端
 run:

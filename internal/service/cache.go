@@ -16,9 +16,9 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/cache"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/cache"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 )
 
 // CacheService 缓存管理服务（使用内存缓存）

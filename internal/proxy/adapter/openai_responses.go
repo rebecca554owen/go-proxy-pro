@@ -20,8 +20,8 @@ import (
 	"net/http"
 	"strings"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/pkg/logger"
 )
 
 // OpenAIResponsesAdapter OpenAI Responses API 适配器

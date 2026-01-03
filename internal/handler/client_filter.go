@@ -14,9 +14,9 @@ package handler
 import (
 	"strconv"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/service"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/model"
+	"aiproxy/internal/service"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )

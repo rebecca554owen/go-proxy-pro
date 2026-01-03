@@ -1,49 +1,60 @@
 # 构建阶段
-FROM golang:1.21-alpine AS builder
+FROM golang:alpine AS builder
 
-WORKDIR /app
+WORKDIR /build
 
-# 安装必要的工具
-RUN apk add --no-cache git make
+ARG VERSION=1.0.0
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOCACHE=/root/.cache/go-build \
+    GOMODCACHE=/go/pkg/mod
 
-# 复制 go mod 文件并下载依赖
+# 先复制 go.mod 和 go.sum 以利用 Docker 缓存
 COPY go.mod go.sum ./
-RUN go mod download
+RUN go mod download && go mod verify
 
 # 复制源代码
 COPY . .
 
-# 构建前端
-WORKDIR /app/web
-RUN npm install
-RUN npm run build
+# 复制预构建的前端资源（在 Actions 中构建）
+COPY ./web/dist ./web/dist
 
-# 构建后端
-WORKDIR /app
-RUN make build
+# 构建后端（使用优化参数）
+RUN go build -ldflags "-s -w" -o bin/server ./cmd/server
 
 # 运行阶段
 FROM alpine:latest
 
+# 安装运行时依赖时使用缓存
+RUN apk upgrade --no-cache \
+    && apk add --no-cache ca-certificates tzdata wget \
+    && update-ca-certificates \
+    && rm -rf /var/cache/apk/*
+
 WORKDIR /app
 
-# 安装运行时依赖
-RUN apk add --no-cache ca-certificates tzdata
+# 复制二进制文件并设置最小权限
+COPY --from=builder /build/bin/server ./aiproxy
+RUN chmod +x aiproxy
 
-# 复制二进制文件和前端资源
-COPY --from=builder /app/aiproxy /app/
-COPY --from=builder /app/internal/handler/dist /app/internal/handler/dist/
-COPY --from=builder /app/configs /app/configs/
+# 复制前端资源
+COPY --from=builder /build/web/dist ./internal/handler/dist/
+
+# 创建非 root 用户（安全增强）
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup && \
+    chown -R appuser:appgroup /app
 
 # 创建日志目录
-RUN mkdir -p logs
+RUN mkdir -p logs && chown -R appuser:appgroup logs
 
-# 暴露端口
+USER appuser
+
 EXPOSE 8080
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
 
-# 运行应用
-CMD ["./aiproxy", "server"]
+ENTRYPOINT ["./aiproxy", "server"]

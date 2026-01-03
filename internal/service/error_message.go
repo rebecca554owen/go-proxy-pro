@@ -15,9 +15,9 @@ import (
 	"strings"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 // ErrorMessageService 错误消息服务

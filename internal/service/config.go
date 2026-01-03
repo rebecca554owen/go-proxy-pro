@@ -12,8 +12,8 @@
 package service
 
 import (
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 	"strconv"
 	"sync"
 	"time"

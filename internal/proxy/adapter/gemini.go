@@ -21,8 +21,8 @@ import (
 	"strings"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/pkg/logger"
 )
 
 type GeminiAdapter struct{}

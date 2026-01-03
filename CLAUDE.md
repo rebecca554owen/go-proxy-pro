@@ -347,7 +347,7 @@ type Adapter interface {
 ## 目录结构
 
 ```
-go-aiproxy/
+aiproxy/
 ├── cmd/server/              # 程序入口
 ├── internal/
 │   ├── handler/             # HTTP 处理器（平台路由）

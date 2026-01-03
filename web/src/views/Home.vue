@@ -100,7 +100,7 @@ export OPENAI_API_KEY="你的API_Key"</code></pre>
           点击加入 QQ 交流群【go-proxy-pro】
         </a>
         <p class="footer-note">
-          <a href="https://github.com/suiyuebaobao/go-proxy-pro" target="_blank">
+          <a href="https://github.com/rebecca554owen/aiproxy" target="_blank">
             <i class="fa-brands fa-github"></i> GitHub
           </a>
         </p>

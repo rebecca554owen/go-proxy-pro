@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"go-aiproxy/pkg/logger"
+	"aiproxy/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,0 +1,31 @@
+services:
+  # AIProxy 应用（MySQL 数据库需自备）
+  aiproxy:
+    image: ghcr.io/rebecca554owen/aiproxy:latest
+    container_name: aiproxy-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # 数据库配置
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: aiproxy
+      DB_PASSWORD: aiproxy-password
+      DB_NAME: aiproxy
+
+      # 服务配置
+      PORT: 8080
+
+      # JWT 密钥（生产环境请修改）
+      JWT_SECRET: aiproxy-jwt-secret-change-in-production
+
+      TZ: Asia/Shanghai
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

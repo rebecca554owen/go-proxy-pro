@@ -11,9 +11,9 @@
 package handler
 
 import (
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/response"
 	"strconv"
 	"time"
 

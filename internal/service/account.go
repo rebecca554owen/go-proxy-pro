@@ -14,10 +14,10 @@ import (
 	"errors"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/proxy/scheduler"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/proxy/scheduler"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 var (

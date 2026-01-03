@@ -14,8 +14,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"go-aiproxy/internal/errormatch"
-	"go-aiproxy/internal/service"
+	"aiproxy/internal/errormatch"
+	"aiproxy/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

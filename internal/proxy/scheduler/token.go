@@ -21,8 +21,8 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 )
 
 // TokenManager OAuth Token 管理器

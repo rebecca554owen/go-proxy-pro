@@ -11,8 +11,8 @@
 package repository
 
 import (
-	"go-aiproxy/internal/model"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/pkg/logger"
 )
 
 func AutoMigrate() error {
