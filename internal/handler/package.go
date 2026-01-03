@@ -11,9 +11,9 @@
 package handler
 
 import (
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/response"
 	"strconv"
 	"time"
 
@@ -52,12 +52,12 @@ func (h *PackageHandler) CreatePackage(c *gin.Context) {
 		Name          string  `json:"name" binding:"required"`
 		Type          string  `json:"type" binding:"required,oneof=subscription quota"`
 		Price         float64 `json:"price"`
-		Duration      int     `json:"duration"`
-		DailyQuota    float64 `json:"daily_quota"`    // 订阅类型：每日额度
-		WeeklyQuota   float64 `json:"weekly_quota"`   // 订阅类型：每周额度
-		MonthlyQuota  float64 `json:"monthly_quota"`  // 订阅类型：每月额度
-		QuotaAmount   float64 `json:"quota_amount"`   // 额度类型：总额度
-		AllowedModels string  `json:"allowed_models"` // 允许的模型
+		Duration      *int    `json:"duration"`         // 有效期天数（null=永久）
+		DailyQuota    float64 `json:"daily_quota"`      // 订阅类型：每日额度
+		WeeklyQuota   float64 `json:"weekly_quota"`     // 订阅类型：每周额度
+		MonthlyQuota  float64 `json:"monthly_quota"`    // 订阅类型：每月额度
+		QuotaAmount   float64 `json:"quota_amount"`     // 额度类型：总额度
+		AllowedModels string  `json:"allowed_models"`   // 允许的模型
 		Description   string  `json:"description"`
 	}
 
@@ -123,7 +123,7 @@ func (h *PackageHandler) UpdatePackage(c *gin.Context) {
 		pkg.Price = *req.Price
 	}
 	if req.Duration != nil {
-		pkg.Duration = *req.Duration
+		pkg.Duration = req.Duration
 	}
 	if req.DailyQuota != nil {
 		pkg.DailyQuota = *req.DailyQuota
@@ -204,7 +204,11 @@ func (h *PackageHandler) AssignPackage(c *gin.Context) {
 
 	// 创建用户套餐
 	now := time.Now()
-	expire := now.AddDate(0, 0, pkg.Duration)
+	var expire *time.Time
+	if pkg.Duration != nil {
+		e := now.AddDate(0, 0, *pkg.Duration)
+		expire = &e
+	}
 
 	up := &model.UserPackage{
 		UserID:        uint(userID),
@@ -213,7 +217,7 @@ func (h *PackageHandler) AssignPackage(c *gin.Context) {
 		Type:          pkg.Type,
 		Status:        "active",
 		StartTime:     &now,
-		ExpireTime:    &expire,
+		ExpireTime:    expire,  // Duration 为 null 时，ExpireTime 也为 null（永久套餐）
 		AllowedModels: pkg.AllowedModels,
 	}
 
@@ -271,9 +275,9 @@ func (h *PackageHandler) UpdateUserPackage(c *gin.Context) {
 	if req.Status != "" {
 		up.Status = req.Status
 	}
-	if req.ExpireTime != nil {
-		up.ExpireTime = req.ExpireTime
-	}
+	// 始终更新 ExpireTime，允许设置为 null（永久套餐）
+	// 前端发送 null 时表示清空过期时间，设为永久有效
+	up.ExpireTime = req.ExpireTime
 	if req.DailyQuota != nil {
 		up.DailyQuota = *req.DailyQuota
 	}

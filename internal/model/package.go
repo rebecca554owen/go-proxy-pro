@@ -23,7 +23,7 @@ type Package struct {
 	Name        string         `gorm:"size:100;not null" json:"name"`                       // 套餐名称
 	Type        string         `gorm:"size:20;not null;index" json:"type"`                  // subscription(订阅包月) / quota(额度)
 	Price       float64        `gorm:"type:decimal(10,2);default:0" json:"price"`           // 价格（美元）
-	Duration    int            `gorm:"default:30" json:"duration"`                          // 有效期天数
+	Duration    *int           `gorm:"default:30" json:"duration"`                          // 有效期天数（null=永久）
 
 	// 订阅类型的额度限制（美元）
 	DailyQuota  float64        `gorm:"type:decimal(10,4);default:0" json:"daily_quota"`     // 每日额度（0=不限）

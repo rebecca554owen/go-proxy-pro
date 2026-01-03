@@ -226,7 +226,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="最大并发">
-                <el-input-number v-model="form.max_concurrency" :min="1" :max="100" style="width: 100%" />
+                <el-input-number v-model="form.max_concurrency" :min="0" style="width: 100%" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -515,7 +515,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="最大并发">
-              <el-input-number v-model="form.max_concurrency" :min="1" :max="100" style="width: 100%" />
+              <el-input-number v-model="form.max_concurrency" :min="0" style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col :span="6">

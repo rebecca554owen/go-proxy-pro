@@ -73,6 +73,17 @@ func Init(dir string, level int) error {
 func newLogger(module string) (*Logger, error) {
 	// 使用 lumberjack 做日志轮转
 	filename := filepath.Join(logDir, fmt.Sprintf("%s.log", module))
+
+	// 预先创建日志文件并设置权限（解决 Docker 容器权限问题）
+	// 如果文件不存在，创建它并设置 0666 权限（所有用户可读写）
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		if err != nil {
+			return nil, fmt.Errorf("创建日志文件失败: %w", err)
+		}
+		file.Close()
+	}
+
 	writer := &lumberjack.Logger{
 		Filename:   filename,
 		MaxSize:    100, // MB
@@ -82,8 +93,20 @@ func newLogger(module string) (*Logger, error) {
 		LocalTime:  true,
 	}
 
-	// 编码器配置 - JSON格式
-	encoderConfig := zapcore.EncoderConfig{
+	// 控制台编码器配置（文本格式）
+	consoleEncoderConfig := zapcore.EncoderConfig{
+		TimeKey:        "time",
+		LevelKey:       "level",
+		NameKey:        "module",
+		MessageKey:     "msg",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+	}
+
+	// 文件编码器配置（JSON格式）
+	fileEncoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "timestamp",
 		LevelKey:       "level",
 		NameKey:        "module",
@@ -98,12 +121,22 @@ func newLogger(module string) (*Logger, error) {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 
-	// 创建 core
-	core := zapcore.NewCore(
-		zapcore.NewJSONEncoder(encoderConfig),
+	// 控制台core（文本格式）
+	consoleCore := zapcore.NewCore(
+		zapcore.NewConsoleEncoder(consoleEncoderConfig),
+		zapcore.AddSync(os.Stdout),
+		globalLevel,
+	)
+
+	// 文件core（JSON格式）
+	fileCore := zapcore.NewCore(
+		zapcore.NewJSONEncoder(fileEncoderConfig),
 		zapcore.AddSync(writer),
 		globalLevel,
 	)
+
+	// 合并两个core
+	core := zapcore.NewTee(consoleCore, fileCore)
 
 	// 创建 logger
 	zapLogger := zap.New(core,

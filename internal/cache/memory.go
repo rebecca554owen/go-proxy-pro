@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/config"
+	"aiproxy/internal/config"
 )
 
 // ==================== 会话存储 ====================
@@ -428,7 +428,8 @@ func (c *ConcurrencyCounter) Acquire(limit int, ttl time.Duration) (bool, int) {
 	// 先清理过期槽位
 	c.cleanExpiredLocked(ttl)
 
-	if len(c.slots) >= limit {
+	// limit <= 0 表示不限制
+	if limit > 0 && len(c.slots) >= limit {
 		return false, len(c.slots)
 	}
 
@@ -623,10 +624,7 @@ func (m *ConcurrencyManager) ResetAccountConcurrency(accountID uint) {
 
 // AcquireUser 获取用户并发槽位
 func (m *ConcurrencyManager) AcquireUser(ctx context.Context, userID uint, limit int) (bool, int64) {
-	if limit <= 0 {
-		limit = 10 // 默认用户并发限制
-	}
-
+	// limit <= 0 表示不限制
 	counter := m.getOrCreateUserCounter(userID)
 	ttl := getConcurrencyTTL()
 	acquired, count := counter.Acquire(limit, ttl)

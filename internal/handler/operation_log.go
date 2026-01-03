@@ -14,8 +14,8 @@ import (
 	"strconv"
 	"time"
 
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -131,10 +131,8 @@ func (h *OperationLogHandler) GetStats(c *gin.Context) {
 
 // Cleanup 清理旧日志
 func (h *OperationLogHandler) Cleanup(c *gin.Context) {
-	days, _ := strconv.Atoi(c.DefaultQuery("days", "90"))
-	if days < 7 {
-		days = 7 // 最少保留7天
-	}
+	days, _ := strconv.Atoi(c.DefaultQuery("days", "0"))
+	// days=0 表示删除所有日志
 
 	deleted, err := h.repo.DeleteOldLogs(days)
 	if err != nil {

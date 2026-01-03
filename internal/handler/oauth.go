@@ -27,8 +27,8 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/service"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/service"
+	"aiproxy/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 	utls "github.com/refraction-networking/utls"

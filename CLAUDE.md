@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-Go-AIProxy 是一个企业级 AI API 代理服务，提供统一的多平台 AI API（Claude、OpenAI、Gemini）访问接口，支持账户池管理、负载均衡、计费和监控功能。
+AiProxy 是一个企业级 AI API 代理服务，提供统一的多平台 AI API（Claude、OpenAI、Gemini）访问接口，支持账户池管理、负载均衡、计费和监控功能。
 
 **技术架构**：Go 后端 (Gin) + Vue 3 前端 (Element Plus) + MySQL 8.0
 
@@ -175,63 +175,38 @@ package scheduler
 
 ## 开发命令
 
-### 后端 (Go)
+### Makefile 命令
 
 ```bash
-# 构建后端二进制文件
-make build
-# 输出: bin/server
-
-# 直接运行后端（开发模式）
-make run
-# 服务启动在 8080 端口
-
-# 完整生产构建（前端 + 后端）
-make all
-
-# 运行测试
-make test
-
-# 格式化代码
-make fmt
-
-# 代码检查
-make lint
-
-# 热重载开发（需要安装 air）
-make dev
-```
-
-### 前端 (Vue 3)
-
-```bash
-# 安装依赖
+# 前端依赖安装
 make web-deps
 
-# 开发服务器（代理 API 到后端）
-make web-dev
-# 前端: http://localhost:3000
-# API 代理: → http://localhost:8080
+# 前端构建
+make web
 
-# 生产构建
-make web-build
-# 输出: web/dist/* → internal/handler/dist/
+# 后端构建
+make build
+
+# 完整构建（前端 + 后端）
+make all
 ```
 
 ### 配置文件
 
-**后端配置**: `configs/config.yaml`
+**后端配置**: `configs/config.yaml`（可选，支持无配置文件启动）
 - 服务端口（默认: 8080）
 - MySQL 连接
 - JWT 密钥
 - 缓存 TTL 设置
 - 日志目录和级别
 
+**配置优先级**: 环境变量 > YAML 文件 > 默认值
+
 **前端配置**: `web/vite.config.js`
 - 开发服务器端口: 3000
 - API 代理: `/api` → `http://localhost:8080`
 
-**默认管理员账号**: `admin` / `mowen3078697@`
+**默认管理员账号**: `admin` / `admin123`
 
 ## 核心架构
 
@@ -347,7 +322,7 @@ type Adapter interface {
 ## 目录结构
 
 ```
-go-aiproxy/
+aiproxy/
 ├── cmd/server/              # 程序入口
 ├── internal/
 │   ├── handler/             # HTTP 处理器（平台路由）
@@ -399,7 +374,6 @@ go-aiproxy/
 - `claude-official`：OAuth（access token + session key）
 - `claude-console`：API Key 模式
 - `bedrock`：AWS Bedrock
-- `CCR`：第三方 Claude
 
 ### OpenAI
 - `openai`：官方 API
@@ -409,6 +383,7 @@ go-aiproxy/
 ### Gemini
 - `gemini`：基于 OAuth
 - `gemini-api`：API Key 模式
+- `droid`：Droid
 
 ## 核心数据表
 
@@ -448,16 +423,12 @@ go-aiproxy/
 ## 开发流程
 
 1. 启动 MySQL：确保数据库 `aiproxy` 存在
-2. 如需要，配置 `configs/config.yaml`
-3. 运行后端：`make run`（端口 8080）
-4. 运行前端：`make web-dev`（端口 3000，代理到 8080）
-5. 访问管理后台：http://localhost:3000
-6. 生产构建：`make all`
-
-## 热重载开发
-
-先安装 air：`go install github.com/air-verse/air@latest`
-然后使用：`make dev`
+2. 如需要，配置 `configs/config.yaml`（可选，支持环境变量）
+3. 安装前端依赖：`make web-deps`
+4. 运行后端：`go run main.go`（端口 8080）
+5. 运行前端：`cd web && npm run dev`（端口 3000，代理到 8080）
+6. 访问管理后台：http://localhost:3000
+7. 生产构建：`make all`
 
 ## 快速参考
 

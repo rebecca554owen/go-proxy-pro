@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"io"
 
-	"go-aiproxy/internal/model"
+	"aiproxy/internal/model"
 )
 
 var (

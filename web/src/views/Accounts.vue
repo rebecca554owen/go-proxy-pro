@@ -267,7 +267,7 @@
                 {{ row.current_concurrency || 0 }}
               </span>
               <span class="concurrency-separator">/</span>
-              <span class="concurrency-max">{{ row.max_concurrency || 5 }}</span>
+              <span class="concurrency-max">{{ formatMaxConcurrency(row.max_concurrency ?? 5) }}</span>
             </div>
           </template>
         </el-table-column>
@@ -640,10 +640,17 @@ function getUsageBarClass(utilization) {
 // 获取并发状态颜色类
 function getConcurrencyClass(row) {
   const current = row.current_concurrency || 0
-  const max = row.max_concurrency || 5
+  const max = row.max_concurrency ?? 5
+  if (max <= 0) return 'normal' // 无限并发总是正常状态
   if (current >= max) return 'danger'
   if (current >= max * 0.8) return 'warning'
   return 'normal'
+}
+
+// 格式化最大并发显示
+function formatMaxConcurrency(limit) {
+  if (!limit || limit <= 0) return '∞'
+  return limit
 }
 
 function formatNumber(num) {

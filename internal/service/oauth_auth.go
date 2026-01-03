@@ -26,8 +26,8 @@ import (
 	"strings"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/pkg/logger"
 
 	utls "github.com/refraction-networking/utls"
 	"golang.org/x/net/proxy"

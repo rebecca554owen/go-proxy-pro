@@ -13,7 +13,7 @@
     <header class="home-header">
       <div class="logo">
         <i class="fa-solid fa-atom"></i>
-        <span>Go-AIProxy</span>
+        <span>AiProxy</span>
       </div>
       <router-link to="/login" class="btn-login">
         <i class="fa-solid fa-right-to-bracket"></i>
@@ -100,12 +100,12 @@ export OPENAI_API_KEY="你的API_Key"</code></pre>
           点击加入 QQ 交流群【go-proxy-pro】
         </a>
         <p class="footer-note">
-          <a href="https://github.com/suiyuebaobao/go-proxy-pro" target="_blank">
+          <a href="https://github.com/rebecca554owen/aiproxy" target="_blank">
             <i class="fa-brands fa-github"></i> GitHub
           </a>
         </p>
       </div>
-      <p class="copyright">&copy; 2025 Go-AIProxy. All rights reserved.</p>
+      <p class="copyright">&copy; 2025 AiProxy. All rights reserved.</p>
     </footer>
   </div>
 </template>

@@ -1,4 +1,4 @@
--- Go-AIProxy Database Initialization Script
+-- AiProxy Database Initialization Script
 -- This script is automatically run by MySQL on first container start
 -- via docker-entrypoint-initdb.d/
 

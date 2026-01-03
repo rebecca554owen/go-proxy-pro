@@ -200,7 +200,7 @@ const fetchRecords = async () => {
       params.model = filters.model
     }
 
-    const res = await api.getUserUsageRecords(params)
+    const res = await api.getMyUsageStats(params)
     if (res.data) {
       records.value = res.data.items || []
       pagination.total = res.data.total || 0
@@ -214,7 +214,7 @@ const fetchRecords = async () => {
 
 const fetchSummary = async () => {
   try {
-    const res = await api.getUserUsageSummary()
+    const res = await api.getMyUsageSummary()
     if (res.data) {
       summary.total_cost = res.data.total?.total_cost || 0
       summary.total_tokens = res.data.total?.total_tokens || 0
@@ -228,9 +228,9 @@ const fetchSummary = async () => {
 
 const fetchModels = async () => {
   try {
-    const res = await api.getUserModelStats()
-    if (res.data) {
-      models.value = res.data.map(m => m.model).filter(Boolean)
+    const res = await api.getMyModelUsage()
+    if (res.data && res.data.model_usage) {
+      models.value = res.data.model_usage.map(m => m.model).filter(Boolean)
     }
   } catch (e) {
     console.error('Failed to fetch models:', e)

@@ -21,12 +21,12 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/cache"
-	"go-aiproxy/internal/errormatch"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/proxy/adapter"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/cache"
+	"aiproxy/internal/errormatch"
+	"aiproxy/internal/model"
+	"aiproxy/internal/proxy/adapter"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 var (

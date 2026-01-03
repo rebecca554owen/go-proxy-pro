@@ -14,9 +14,9 @@ import (
 	"errors"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 // ModelMappingService 模型映射服务

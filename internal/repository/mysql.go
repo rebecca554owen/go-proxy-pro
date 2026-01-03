@@ -11,7 +11,7 @@
 package repository
 
 import (
-	"go-aiproxy/internal/config"
+	"aiproxy/internal/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

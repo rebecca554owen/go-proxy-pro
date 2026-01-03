@@ -19,15 +19,15 @@ docs/
 # Build artifacts (will be built in container)
 aiproxy
 aiproxy-test
-go-aiproxy
+aiproxy
 bin/
 *.exe
 *.dll
 *.so
 *.dylib
 
-# Frontend artifacts (will be built in container)
-web/dist/
+# Frontend artifacts (pre-built in CI)
+# web/dist/
 web/node_modules/
 
 # Logs and temporary data

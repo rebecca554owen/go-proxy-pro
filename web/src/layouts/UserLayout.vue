@@ -14,7 +14,7 @@
       <div class="header-left">
         <div class="logo">
           <el-icon :size="24"><Monitor /></el-icon>
-          <span class="logo-text">AI Proxy 用户中心</span>
+          <span class="logo-text">AiProxy 用户中心</span>
         </div>
       </div>
       <div class="header-right">

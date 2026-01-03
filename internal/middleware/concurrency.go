@@ -11,11 +11,11 @@
 package middleware
 
 import (
-	"go-aiproxy/internal/cache"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/cache"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,9 +51,7 @@ func UserConcurrencyControl() gin.HandlerFunc {
 		}
 
 		limit := user.MaxConcurrency
-		if limit <= 0 {
-			limit = 10 // 默认限制
-		}
+		// limit <= 0 表示不限制
 
 		// 尝试获取并发槽位
 		acquired, current, err := sessionCache.AcquireUserConcurrency(c.Request.Context(), uid, limit)

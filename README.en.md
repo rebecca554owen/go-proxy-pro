@@ -1,14 +1,14 @@
 <div align="center">
 
-  # Go-AIProxy
+  # AiProxy
 
   ### 🚀 Enterprise-Grade AI API Proxy Service
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
+  [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://golang.org/)
   [![Vue Version](https://img.shields.io/badge/Vue-3.4+-4FC08D?logo=vue.js)](https://vuejs.org/)
-  [![GitHub Stars](https://img.shields.io/github/stars/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/stargazers)
-  [![GitHub Forks](https://img.shields.io/github/forks/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/network/members)
+  [![GitHub Stars](https://img.shields.io/github/stars/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/stargazers)
+  [![GitHub Forks](https://img.shields.io/github/forks/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/network/members)
 
   **A unified API gateway for multiple AI platforms** - Claude, OpenAI, Gemini, and more
 
@@ -24,8 +24,8 @@
 
 - **Author WeChat**: suiyue_creation
 - **QQ Group**: [Join go-proxy-pro](https://qm.qq.com/q/iJ4bHLlMEa)
-- **GitHub Issues**: [Submit issues](https://github.com/suiyuebaobao/go-proxy-pro/issues)
-- **GitHub Discussions**: [Join discussions](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
+- **GitHub Issues**: [Submit issues](https://github.com/rebecca554owen/aiproxy/issues)
+- **GitHub Discussions**: [Join discussions](https://github.com/rebecca554owen/aiproxy/discussions)
 
 ---
 
@@ -87,31 +87,36 @@
 
 ### Prerequisites
 
-- **Go** 1.21+
+- **Go** 1.25+
 - **MySQL** 8.0+
-- **Node.js** 18+ (for frontend development)
+- **Node.js** 22+ (for frontend development)
 
 ### Option 1: Docker Deploy (Recommended)
 
 ```bash
 # Clone the repository
-git clone https://github.com/suiyuebaobao/go-proxy-pro.git
-cd go-proxy-pro/go-aiproxy
+git clone https://github.com/rebecca554owen/aiproxy.git
+cd aiproxy
 
-# Start services (MySQL + Application)
-docker-compose up -d
+# Build image
+docker build -t aiproxy:latest .
 
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
+# Run container (requires MySQL running first)
+docker run -d \
+  --name aiproxy \
+  --restart unless-stopped \
+  -p 8080:8080 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=3306 \
+  -e DB_USER=root \
+  -e DB_PASSWORD=your_password \
+  -e DB_NAME=aiproxy \
+  aiproxy:latest
 ```
 
 **Access**:
 - 🌐 Web UI: http://localhost:8080
-- 📊 API: http://localhost:8080/claude/v1/messages
-- 🗄️ MySQL: localhost:3306
+- 📊 API: http://localhost:8080/api/v1/
 
 **Default Admin Account**:
 - Username: `admin`
@@ -185,7 +190,7 @@ curl http://localhost:8080/responses \
 ## 📁 Project Structure
 
 ```
-go-aiproxy/
+AiProxy/
 ├── cmd/server/          # Application entry point
 ├── internal/
 │   ├── handler/         # HTTP handlers
@@ -205,7 +210,7 @@ go-aiproxy/
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Go** 1.21+ with **Gin** framework
+- **Go** 1.25+ with **Gin** framework
 - **MySQL** 8.0+ with **GORM**
 - In-memory caching (sync.Map)
 - JWT + API Key authentication
@@ -236,7 +241,7 @@ go-aiproxy/
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `MYSQL_ROOT_PASSWORD` | `go-aiproxy-root` | MySQL root password |
+| `MYSQL_ROOT_PASSWORD` | `aiproxy-root` | MySQL root password |
 | `MYSQL_DATABASE` | `aiproxy` | Database name |
 | `MYSQL_USER` | `aiproxy` | MySQL user |
 | `MYSQL_PASSWORD` | `aiproxy-password` | MySQL password |
@@ -283,6 +288,6 @@ If you find this project helpful, please consider giving it a star! ⭐
 
   **95% of this project was developed using GLM with Claude Code**
 
-  [⬆ Back to Top](#go-aiproxy)
+  [⬆ Back to Top](#AiProxy)
 
 </div>

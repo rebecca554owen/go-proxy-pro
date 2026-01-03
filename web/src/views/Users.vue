@@ -53,12 +53,13 @@
         </el-table-column>
         <el-table-column prop="max_concurrency" label="并发限制" width="90">
           <template #default="{ row }">
-            {{ row.max_concurrency || 10 }}
+            {{ formatMaxConcurrency(row.max_concurrency ?? 10) }}
           </template>
         </el-table-column>
         <el-table-column prop="quota_key_balance" label="额度余额" width="100">
           <template #default="{ row }">
-            <span :class="{ 'low-balance': row.quota_key_balance < 1 && row.quota_key_balance > 0 }">
+            <span v-if="row.quota_key_balance === -1" class="unlimited">无限</span>
+            <span v-else :class="{ 'low-balance': row.quota_key_balance < 1 && row.quota_key_balance > 0 }">
               ${{ (row.quota_key_balance || 0).toFixed(2) }}
             </span>
           </template>
@@ -108,7 +109,7 @@
     </el-card>
 
     <!-- 编辑弹窗 -->
-    <el-dialog v-model="dialogVisible" title="编辑用户" width="500">
+    <el-dialog v-model="dialogVisible" title="编辑用户" width="90%" custom-class="dialog-small">
       <el-form ref="formRef" :model="editForm" :rules="rules" label-width="80px">
         <el-form-item label="用户名">
           <el-input :value="editForm.username" disabled />
@@ -133,8 +134,8 @@
           <div class="form-tip">0 = 免费，1 = 原价，1.5 = 1.5倍</div>
         </el-form-item>
         <el-form-item label="最大并发">
-          <el-input-number v-model="editForm.max_concurrency" :min="1" :max="100" style="width: 100%" />
-          <div class="form-tip">用户同时进行的最大请求数</div>
+          <el-input-number v-model="editForm.max_concurrency" :min="0" style="width: 100%" />
+          <div class="form-tip">用户同时进行的最大请求数，0 表示不限制</div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -144,7 +145,7 @@
     </el-dialog>
 
     <!-- 创建用户弹窗 -->
-    <el-dialog v-model="createUserDialogVisible" title="创建用户" width="500" :close-on-click-modal="false">
+    <el-dialog v-model="createUserDialogVisible" title="创建用户" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
       <el-form ref="createUserFormRef" :model="createUserForm" :rules="createUserRules" label-width="80px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="createUserForm.username" placeholder="请输入用户名" />
@@ -172,8 +173,8 @@
           <div class="form-tip">0 = 免费，1 = 原价，1.5 = 1.5倍</div>
         </el-form-item>
         <el-form-item label="最大并发">
-          <el-input-number v-model="createUserForm.max_concurrency" :min="1" :max="100" style="width: 100%" />
-          <div class="form-tip">用户同时进行的最大请求数</div>
+          <el-input-number v-model="createUserForm.max_concurrency" :min="0" style="width: 100%" />
+          <div class="form-tip">用户同时进行的最大请求数，0 表示不限制</div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -183,7 +184,7 @@
     </el-dialog>
 
     <!-- 批量设置倍率弹窗 -->
-    <el-dialog v-model="batchRateDialogVisible" title="批量设置价格倍率" width="450">
+    <el-dialog v-model="batchRateDialogVisible" title="批量设置价格倍率" width="90%" custom-class="dialog-small">
       <el-form label-width="100px">
         <el-form-item label="选中用户">
           <div class="selected-users">
@@ -204,7 +205,7 @@
     </el-dialog>
 
     <!-- 用户使用统计弹窗 -->
-    <el-dialog v-model="usageDialogVisible" :title="`${usageUser?.username} 的使用统计`" width="800">
+    <el-dialog v-model="usageDialogVisible" :title="`${usageUser?.username} 的使用统计`" width="90%" custom-class="dialog-large">
       <div v-loading="usageLoading">
         <!-- 统计概览 -->
         <el-row :gutter="16" class="usage-summary">
@@ -284,7 +285,7 @@
     </el-dialog>
 
     <!-- API Key 管理弹窗 -->
-    <el-dialog v-model="apiKeyDialogVisible" :title="`${apiKeyUser?.username} 的 apikey`" width="900">
+    <el-dialog v-model="apiKeyDialogVisible" :title="`${apiKeyUser?.username} 的 apikey`" width="90%" custom-class="dialog-large">
       <div class="apikey-header">
         <el-button type="primary" size="small" @click="showCreateAPIKeyDialog">
           <el-icon><Plus /></el-icon> 创建 apikey
@@ -346,7 +347,7 @@
     </el-dialog>
 
     <!-- 创建 API Key 弹窗 -->
-    <el-dialog v-model="createKeyDialogVisible" title="创建 apikey" width="500" :close-on-click-modal="false">
+    <el-dialog v-model="createKeyDialogVisible" title="创建 apikey" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
       <el-form :model="createKeyForm" :rules="createKeyRules" ref="createKeyFormRef" label-position="top">
         <el-form-item label="名称" prop="name">
           <el-input v-model="createKeyForm.name" placeholder="为这个 Key 起个名字" />
@@ -390,9 +391,9 @@
     </el-dialog>
 
     <!-- 显示新创建的 API Key -->
-    <el-dialog v-model="showNewKeyDialog" title="API Key 已创建" width="500" :close-on-click-modal="false">
-      <el-alert type="warning" :closable="false" style="margin-bottom: 16px">
-        请立即复制并妥善保存 API Key，关闭后无法再次查看！
+    <el-dialog v-model="showNewKeyDialog" title="API Key 已创建" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
+      <el-alert type="info" :closable="false" style="margin-bottom: 16px">
+        请妥善保存 API Key。您可以在 API Key 列表中随时查看和复制。
       </el-alert>
       <div class="new-key-display">
         <label>API Key:</label>
@@ -409,7 +410,7 @@
     </el-dialog>
 
     <!-- 用户套餐管理弹窗 -->
-    <el-dialog v-model="packageDialogVisible" :title="`${packageUser?.username} 的套餐`" width="800">
+    <el-dialog v-model="packageDialogVisible" :title="`${packageUser?.username} 的套餐`" width="90%" custom-class="dialog-large">
       <div class="package-header">
         <el-button type="primary" size="small" @click="showAssignPackageDialog">
           <el-icon><Plus /></el-icon> 分配套餐
@@ -435,7 +436,7 @@
           <template #default="{ row }">
             <template v-if="row.type === 'subscription'">
               <div class="subscription-info">
-                <div class="expire-info">有效期: {{ formatDate(row.expire_time) }}</div>
+                <div class="expire-info">有效期: {{ row.expire_time ? formatDate(row.expire_time) : '长期有效' }}</div>
                 <div class="quota-usage">
                   <span v-if="row.daily_quota > 0" class="quota-item">
                     日: ${{ (row.daily_used || 0).toFixed(2) }}/${{ row.daily_quota }}
@@ -489,7 +490,7 @@
     </el-dialog>
 
     <!-- 分配套餐弹窗 -->
-    <el-dialog v-model="assignPackageDialogVisible" title="分配套餐" width="400" :close-on-click-modal="false">
+    <el-dialog v-model="assignPackageDialogVisible" title="分配套餐" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
       <el-form label-width="80px">
         <el-form-item label="选择套餐">
           <el-select v-model="selectedPackageId" style="width: 100%" placeholder="请选择套餐">
@@ -509,7 +510,7 @@
     </el-dialog>
 
     <!-- 编辑用户套餐弹窗 -->
-    <el-dialog v-model="editPackageDialogVisible" title="编辑用户套餐" width="550" :close-on-click-modal="false">
+    <el-dialog v-model="editPackageDialogVisible" title="编辑用户套餐" width="90%" custom-class="dialog-large" :close-on-click-modal="false">
       <el-form :model="editPackageForm" label-width="100px">
         <el-form-item label="状态">
           <el-select v-model="editPackageForm.status" style="width: 100%">
@@ -523,7 +524,8 @@
             v-model="editPackageForm.expire_time"
             type="datetime"
             style="width: 100%"
-            placeholder="选择过期时间"
+            placeholder="留空表示永久有效"
+            clearable
           />
         </el-form-item>
 
@@ -533,17 +535,17 @@
           <el-row :gutter="16">
             <el-col :span="8">
               <el-form-item label="日限额($)">
-                <el-input-number v-model="editPackageForm.daily_quota" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.daily_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="周限额($)">
-                <el-input-number v-model="editPackageForm.weekly_quota" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.weekly_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="月限额($)">
-                <el-input-number v-model="editPackageForm.monthly_quota" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.monthly_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -551,17 +553,17 @@
           <el-row :gutter="16">
             <el-col :span="8">
               <el-form-item label="日已用($)">
-                <el-input-number v-model="editPackageForm.daily_used" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.daily_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="周已用($)">
-                <el-input-number v-model="editPackageForm.weekly_used" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.weekly_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="月已用($)">
-                <el-input-number v-model="editPackageForm.monthly_used" :min="0" :precision="2" size="small" style="width: 100%" />
+                <el-input-number v-model="editPackageForm.monthly_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -570,10 +572,10 @@
         <!-- 额度类型字段 -->
         <template v-if="editPackageForm.type === 'quota'">
           <el-form-item label="总额度($)">
-            <el-input-number v-model="editPackageForm.quota_total" :min="0" :precision="2" style="width: 100%" />
+            <el-input-number v-model="editPackageForm.quota_total" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
           </el-form-item>
           <el-form-item label="已用额度($)">
-            <el-input-number v-model="editPackageForm.quota_used" :min="0" :precision="2" style="width: 100%" />
+            <el-input-number v-model="editPackageForm.quota_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
           </el-form-item>
         </template>
 
@@ -744,6 +746,12 @@ function getPriceRateType(rate) {
 function formatDate(str) {
   if (!str) return ''
   return new Date(str).toLocaleString('zh-CN')
+}
+
+// 格式化最大并发显示
+function formatMaxConcurrency(limit) {
+  if (!limit || limit <= 0) return '∞'
+  return limit
 }
 
 async function fetchUsers() {
@@ -1275,5 +1283,16 @@ async function handleDeleteUserPackage(id) {
 .unlimited {
   color: #67c23a;
   font-weight: 500;
+}
+</style>
+
+<style>
+/* 对话框自适应宽度 */
+.dialog-small {
+  max-width: 500px;
+}
+
+.dialog-large {
+  max-width: 1000px;
 }
 </style>

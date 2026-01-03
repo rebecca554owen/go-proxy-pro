@@ -15,9 +15,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -121,6 +121,8 @@ func (h *AIModelHandler) Update(c *gin.Context) {
 	existing.MaxOutput = updates.MaxOutput
 	existing.InputPrice = updates.InputPrice
 	existing.OutputPrice = updates.OutputPrice
+	existing.CacheCreatePrice = updates.CacheCreatePrice
+	existing.CacheReadPrice = updates.CacheReadPrice
 	existing.Enabled = updates.Enabled
 	existing.IsDefault = updates.IsDefault
 	existing.SortOrder = updates.SortOrder

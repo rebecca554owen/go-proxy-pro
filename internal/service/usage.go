@@ -16,8 +16,8 @@ import (
 	"fmt"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 )
 
 // UsageService 使用统计服务（直接写入 MySQL）

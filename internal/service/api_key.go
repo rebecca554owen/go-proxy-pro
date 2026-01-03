@@ -16,9 +16,9 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 var (
@@ -48,7 +48,7 @@ func NewAPIKeyService() *APIKeyService {
 // CreateAPIKeyRequest 创建 API Key 请求
 type CreateAPIKeyRequest struct {
 	Name             string     `json:"name" binding:"required"`
-	UserPackageID    uint       `json:"user_package_id" binding:"required"` // 必须绑定用户套餐
+	UserPackageID    *uint      `json:"user_package_id"` // 绑定用户套餐（可选）
 	AllowedPlatforms string     `json:"allowed_platforms"`
 	AllowedModels    string     `json:"allowed_models"`
 	RateLimit        int        `json:"rate_limit"`
@@ -67,25 +67,30 @@ type CreateAPIKeyResponse struct {
 
 // Create 创建新的 API Key
 func (s *APIKeyService) Create(userID uint, req *CreateAPIKeyRequest) (*CreateAPIKeyResponse, error) {
-	getAPIKeyLog().Info("[apikey] 创建 API Key 请求 | UserID: %d | Name: %s | PackageID: %d", userID, req.Name, req.UserPackageID)
+	getAPIKeyLog().Info("[apikey] 创建 API Key 请求 | UserID: %d | Name: %s | PackageID: %v", userID, req.Name, req.UserPackageID)
 
-	// 验证套餐存在且属于该用户
-	userPackage, err := s.userPackageRepo.GetByID(req.UserPackageID)
-	if err != nil {
-		getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐不存在", userID)
-		return nil, errors.New("指定的套餐不存在")
-	}
-	if userPackage.UserID != userID {
-		getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐不属于该用户", userID)
-		return nil, errors.New("该套餐不属于当前用户")
-	}
-	if userPackage.Status != "active" {
-		getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐未激活", userID)
-		return nil, errors.New("套餐未激活，无法创建 API Key")
-	}
+	// 默认计费类型
+	billingType := "payperuse"
 
-	// 从套餐获取计费类型
-	billingType := userPackage.Type
+	// 如果指定了套餐，验证套餐存在且属于该用户
+	if req.UserPackageID != nil {
+		userPackage, err := s.userPackageRepo.GetByID(*req.UserPackageID)
+		if err != nil {
+			getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐不存在", userID)
+			return nil, errors.New("指定的套餐不存在")
+		}
+		if userPackage.UserID != userID {
+			getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐不属于该用户", userID)
+			return nil, errors.New("该套餐不属于当前用户")
+		}
+		if userPackage.Status != "active" {
+			getAPIKeyLog().Info("[apikey] 创建 API Key 失败 | UserID: %d | 原因: 套餐未激活", userID)
+			return nil, errors.New("套餐未激活，无法创建 API Key")
+		}
+
+		// 从套餐获取计费类型
+		billingType = userPackage.Type
+	}
 
 	// 生成新的 API Key
 	key, hash, prefix, err := model.GenerateAPIKey()
@@ -105,7 +110,6 @@ func (s *APIKeyService) Create(userID uint, req *CreateAPIKeyRequest) (*CreateAP
 		allowedPlatforms = req.AllowedPlatforms
 	}
 
-	packageID := req.UserPackageID
 	apiKey := &model.APIKey{
 		UserID:           userID,
 		Name:             req.Name,
@@ -114,7 +118,7 @@ func (s *APIKeyService) Create(userID uint, req *CreateAPIKeyRequest) (*CreateAP
 		KeyPrefix:        prefix,
 		Status:           "active",
 		BillingType:      billingType,
-		UserPackageID:    &packageID,
+		UserPackageID:    req.UserPackageID,
 		AllowedPlatforms: allowedPlatforms,
 		AllowedModels:    req.AllowedModels,
 		RateLimit:        rateLimit,
@@ -128,7 +132,7 @@ func (s *APIKeyService) Create(userID uint, req *CreateAPIKeyRequest) (*CreateAP
 		return nil, err
 	}
 
-	getAPIKeyLog().Info("[apikey] 创建 API Key 成功 | UserID: %d | KeyID: %d | Name: %s | PackageID: %d", userID, apiKey.ID, apiKey.Name, req.UserPackageID)
+	getAPIKeyLog().Info("[apikey] 创建 API Key 成功 | UserID: %d | KeyID: %d | Name: %s | PackageID: %v", userID, apiKey.ID, apiKey.Name, req.UserPackageID)
 
 	return &CreateAPIKeyResponse{
 		ID:        apiKey.ID,
@@ -282,21 +286,26 @@ func (s *APIKeyService) AdminListByUserID(userID uint) ([]model.APIKey, error) {
 
 // AdminCreate 管理员为指定用户创建 API Key
 func (s *APIKeyService) AdminCreate(userID uint, req *CreateAPIKeyRequest) (*CreateAPIKeyResponse, error) {
-	getAPIKeyLog().Info("[apikey] 管理员创建 API Key 请求 | UserID: %d | Name: %s | PackageID: %d", userID, req.Name, req.UserPackageID)
+	getAPIKeyLog().Info("[apikey] 管理员创建 API Key 请求 | UserID: %d | Name: %s | PackageID: %v", userID, req.Name, req.UserPackageID)
 
-	// 验证套餐存在且属于该用户
-	userPackage, err := s.userPackageRepo.GetByID(req.UserPackageID)
-	if err != nil {
-		getAPIKeyLog().Info("[apikey] 管理员创建 API Key 失败 | UserID: %d | 原因: 套餐不存在", userID)
-		return nil, errors.New("指定的套餐不存在")
-	}
-	if userPackage.UserID != userID {
-		getAPIKeyLog().Info("[apikey] 管理员创建 API Key 失败 | UserID: %d | 原因: 套餐不属于该用户", userID)
-		return nil, errors.New("该套餐不属于指定用户")
-	}
+	// 默认计费类型
+	billingType := "payperuse"
 
-	// 从套餐获取计费类型
-	billingType := userPackage.Type
+	// 如果指定了套餐，验证套餐存在且属于该用户
+	if req.UserPackageID != nil {
+		userPackage, err := s.userPackageRepo.GetByID(*req.UserPackageID)
+		if err != nil {
+			getAPIKeyLog().Info("[apikey] 管理员创建 API Key 失败 | UserID: %d | 原因: 套餐不存在", userID)
+			return nil, errors.New("指定的套餐不存在")
+		}
+		if userPackage.UserID != userID {
+			getAPIKeyLog().Info("[apikey] 管理员创建 API Key 失败 | UserID: %d | 原因: 套餐不属于该用户", userID)
+			return nil, errors.New("该套餐不属于指定用户")
+		}
+
+		// 从套餐获取计费类型
+		billingType = userPackage.Type
+	}
 
 	// 生成新的 API Key
 	key, hash, prefix, err := model.GenerateAPIKey()
@@ -316,7 +325,6 @@ func (s *APIKeyService) AdminCreate(userID uint, req *CreateAPIKeyRequest) (*Cre
 		allowedPlatforms = req.AllowedPlatforms
 	}
 
-	packageID := req.UserPackageID
 	apiKey := &model.APIKey{
 		UserID:           userID,
 		Name:             req.Name,
@@ -325,7 +333,7 @@ func (s *APIKeyService) AdminCreate(userID uint, req *CreateAPIKeyRequest) (*Cre
 		KeyPrefix:        prefix,
 		Status:           "active",
 		BillingType:      billingType,
-		UserPackageID:    &packageID,
+		UserPackageID:    req.UserPackageID,
 		AllowedPlatforms: allowedPlatforms,
 		AllowedModels:    req.AllowedModels,
 		RateLimit:        rateLimit,
@@ -339,7 +347,7 @@ func (s *APIKeyService) AdminCreate(userID uint, req *CreateAPIKeyRequest) (*Cre
 		return nil, err
 	}
 
-	getAPIKeyLog().Info("[apikey] 管理员创建 API Key 成功 | UserID: %d | KeyID: %d | Name: %s | PackageID: %d", userID, apiKey.ID, apiKey.Name, req.UserPackageID)
+	getAPIKeyLog().Info("[apikey] 管理员创建 API Key 成功 | UserID: %d | KeyID: %d | Name: %s | PackageID: %v", userID, apiKey.ID, apiKey.Name, req.UserPackageID)
 
 	return &CreateAPIKeyResponse{
 		ID:        apiKey.ID,

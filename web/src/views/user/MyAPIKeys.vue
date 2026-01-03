@@ -189,10 +189,37 @@ const formatLargeNumber = (num) => {
 }
 
 const copyKey = async (key) => {
+  // 优先使用现代 API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(key)
+      ElMessage.success('已复制到剪贴板')
+      return
+    } catch (e) {
+      // 继续尝试 fallback
+    }
+  }
+
+  // Fallback: 使用传统方法（兼容非 HTTPS 环境）
+  const textArea = document.createElement('textarea')
+  textArea.value = key
+  textArea.style.position = 'fixed'
+  textArea.style.left = '-999999px'
+  textArea.style.top = '-999999px'
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+
   try {
-    await navigator.clipboard.writeText(key)
-    ElMessage.success('已复制到剪贴板')
+    const successful = document.execCommand('copy')
+    document.body.removeChild(textArea)
+    if (successful) {
+      ElMessage.success('已复制到剪贴板')
+    } else {
+      ElMessage.error('复制失败')
+    }
   } catch (e) {
+    document.body.removeChild(textArea)
     ElMessage.error('复制失败')
   }
 }
@@ -200,7 +227,7 @@ const copyKey = async (key) => {
 const fetchApiKeys = async () => {
   loading.value = true
   try {
-    const res = await api.getApiKeys()
+    const res = await api.getAPIKeys()
     apiKeys.value = res.data || []
   } catch (e) {
     ElMessage.error('获取 API Key 列表失败')
@@ -226,7 +253,7 @@ const createKey = async () => {
 
   creating.value = true
   try {
-    const res = await api.createApiKey(createForm.value)
+    const res = await api.createAPIKey(createForm.value)
     if (res.code === 0 && res.data) {
       newKeyValue.value = res.data.key_full || res.data.key
       showCreateDialog.value = false
@@ -245,7 +272,7 @@ const createKey = async () => {
 
 const deleteKey = async (id) => {
   try {
-    await api.deleteApiKey(id)
+    await api.deleteAPIKey(id)
     ElMessage.success('删除成功')
     fetchApiKeys()
   } catch (e) {

@@ -23,7 +23,7 @@ import (
 	"strings"
 	"time"
 
-	"go-aiproxy/pkg/response"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )

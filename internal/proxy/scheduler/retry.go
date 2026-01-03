@@ -18,10 +18,10 @@ import (
 	"strings"
 	"time"
 
-	"go-aiproxy/internal/cache"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/proxy/adapter"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/cache"
+	"aiproxy/internal/model"
+	"aiproxy/internal/proxy/adapter"
+	"aiproxy/pkg/logger"
 )
 
 var (

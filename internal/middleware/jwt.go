@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"strings"
 
-	"go-aiproxy/pkg/utils"
+	"aiproxy/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

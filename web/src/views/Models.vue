@@ -184,25 +184,25 @@
         <el-row :gutter="16">
           <el-col :span="12">
             <el-form-item label="上下文长度">
-              <el-input-number v-model="form.context_size" :min="0" :step="1000" style="width: 100%" />
+              <el-input-number v-model="form.context_size" :min="0" :step="1000" style="width: 100%" :controls-position="right" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="最大输出">
-              <el-input-number v-model="form.max_output" :min="0" :step="1000" style="width: 100%" />
+              <el-input-number v-model="form.max_output" :min="0" :step="1000" style="width: 100%" :controls-position="right" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="16">
           <el-col :span="12">
             <el-form-item label="输入价格">
-              <el-input-number v-model="form.input_price" :min="0" :precision="4" :step="0.1" style="width: 100%" />
+              <el-input-number v-model="form.input_price" :min="0" :precision="4" :step="0.1" style="width: 100%" :controls-position="right" />
               <div class="form-tip">$/1M tokens</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="输出价格">
-              <el-input-number v-model="form.output_price" :min="0" :precision="4" :step="0.1" style="width: 100%" />
+              <el-input-number v-model="form.output_price" :min="0" :precision="4" :step="0.1" style="width: 100%" :controls-position="right" />
               <div class="form-tip">$/1M tokens</div>
             </el-form-item>
           </el-col>
@@ -210,13 +210,13 @@
         <el-row :gutter="16">
           <el-col :span="12">
             <el-form-item label="缓存写入">
-              <el-input-number v-model="form.cache_create_price" :min="0" :precision="4" :step="0.1" style="width: 100%" />
+              <el-input-number v-model="form.cache_create_price" :min="0" :precision="4" :step="0.1" style="width: 100%" :controls-position="right" />
               <div class="form-tip">$/1M tokens (可选)</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="缓存读取">
-              <el-input-number v-model="form.cache_read_price" :min="0" :precision="4" :step="0.1" style="width: 100%" />
+              <el-input-number v-model="form.cache_read_price" :min="0" :precision="4" :step="0.1" style="width: 100%" :controls-position="right" />
               <div class="form-tip">$/1M tokens (可选)</div>
             </el-form-item>
           </el-col>
@@ -230,7 +230,7 @@
         <el-row :gutter="16">
           <el-col :span="8">
             <el-form-item label="排序">
-              <el-input-number v-model="form.sort_order" :min="0" style="width: 100%" />
+              <el-input-number v-model="form.sort_order" :min="0" style="width: 100%" :controls-position="right" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -437,11 +437,22 @@ async function submitForm() {
 
   submitting.value = true
   try {
+    // 确保数值字段正确转换，缓存价格为 null 时转为 0
+    const data = {
+      ...form,
+      input_price: parseFloat(form.input_price) || 0,
+      output_price: parseFloat(form.output_price) || 0,
+      cache_create_price: parseFloat(form.cache_create_price) || 0,
+      cache_read_price: parseFloat(form.cache_read_price) || 0,
+      context_size: parseInt(form.context_size) || 0,
+      max_output: parseInt(form.max_output) || 0,
+      sort_order: parseInt(form.sort_order) || 0
+    }
     if (isEdit.value) {
-      await api.updateModel(form.id, form)
+      await api.updateModel(form.id, data)
       ElMessage.success('更新成功')
     } else {
-      await api.createModel(form)
+      await api.createModel(data)
       ElMessage.success('创建成功')
     }
     dialogVisible.value = false

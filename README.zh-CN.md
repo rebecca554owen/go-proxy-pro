@@ -1,16 +1,16 @@
 <div align="center">
 
-  ![Go-AIProxy Logo](web/public/favicon.svg)
+  ![AiProxy Logo](web/public/favicon.svg)
 
-  # Go-AIProxy
+  # AiProxy
 
   ### 🚀 企业级 AI API 代理服务
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
   [![Vue Version](https://img.shields.io/badge/Vue-3.4+-4FC08D?logo=vue.js)](https://vuejs.org/)
-  [![GitHub Stars](https://img.shields.io/github/stars/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/stargazers)
-  [![GitHub Forks](https://img.shields.io/github/forks/suiyuebaobao/go-proxy-pro?style=social)](https://github.com/suiyuebaobao/go-proxy-pro/network/members)
+  [![GitHub Stars](https://img.shields.io/github/stars/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/stargazers)
+  [![GitHub Forks](https://img.shields.io/github/forks/rebecca554owen/aiproxy?style=social)](https://github.com/rebecca554owen/aiproxy/network/members)
 
   **多平台 AI API 统一网关** - 支持 Claude、OpenAI、Gemini 等
 
@@ -88,8 +88,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/suiyuebaobao/go-proxy-pro.git
-cd go-proxy-pro/go-aiproxy
+git clone https://github.com/rebecca554owen/aiproxy.git
+cd aiproxy
 
 # 启动服务（MySQL + 应用）
 docker-compose up -d
@@ -178,7 +178,7 @@ curl http://localhost:8080/responses \
 ## 📁 项目结构
 
 ```
-go-aiproxy/
+AiProxy/
 ├── cmd/server/          # 程序入口
 ├── internal/
 │   ├── handler/         # HTTP 处理器
@@ -229,7 +229,7 @@ go-aiproxy/
 
 | 变量名 | 默认值 | 说明 |
 |--------|--------|------|
-| `MYSQL_ROOT_PASSWORD` | `go-aiproxy-root` | MySQL root 密码 |
+| `MYSQL_ROOT_PASSWORD` | `aiproxy-root` | MySQL root 密码 |
 | `MYSQL_DATABASE` | `aiproxy` | 数据库名 |
 | `MYSQL_USER` | `aiproxy` | MySQL 用户名 |
 | `MYSQL_PASSWORD` | `aiproxy-password` | MySQL 密码 |
@@ -264,8 +264,8 @@ go-aiproxy/
 
 - **作者微信**: suiyue_creation
 - **QQ 交流群**: [点击加入群聊【go-proxy-pro】](https://qm.qq.com/q/iJ4bHLlMEa)
-- **GitHub Issues**: [提交问题](https://github.com/suiyuebaobao/go-proxy-pro/issues)
-- **GitHub Discussions**: [参与讨论](https://github.com/suiyuebaobao/go-proxy-pro/discussions)
+- **GitHub Issues**: [提交问题](https://github.com/rebecca554owen/aiproxy/issues)
+- **GitHub Discussions**: [参与讨论](https://github.com/rebecca554owen/aiproxy/discussions)
 
 ---
 
@@ -285,6 +285,6 @@ go-aiproxy/
 
   **本项目 95% 使用 GLM 配合 Claude Code 开发完成**
 
-  [⬆ 返回顶部](#go-aiproxy)
+  [⬆ 返回顶部](#AiProxy)
 
 </div>

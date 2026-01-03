@@ -223,7 +223,7 @@
                   <template #default="{ row }">
                     <span :class="getConcurrencyClass(row.concurrency, row.max_concurrency)">
                       {{ row.concurrency }}
-                    </span> / {{ row.max_concurrency }}
+                    </span> / {{ formatMaxConcurrency(row.max_concurrency) }}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" width="80" align="center">
@@ -253,7 +253,7 @@
                   <template #default="{ row }">
                     <span :class="getConcurrencyClass(row.concurrency, row.max_concurrency)">
                       {{ row.concurrency }}
-                    </span> / {{ row.max_concurrency }}
+                    </span> / {{ formatMaxConcurrency(row.max_concurrency) }}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" width="80" align="center">
@@ -304,16 +304,37 @@ const userNames = ref({})
 const apiKeyLabels = ref({})
 const apiKeyFullMap = ref({})
 
+// 账号和用户的完整数据（用于获取并发限制）
+const accountsData = ref([])
+const usersData = ref([])
+
 // 不可用账号
 const loadingUnavailable = ref(false)
 const unavailableList = ref([])
+
+// 获取账户的并发限制
+function getAccountMaxConcurrency(accountId) {
+  const account = accountsData.value.find(a => a.id === accountId)
+  return account?.max_concurrency ?? 5
+}
+
+// 获取用户的并发限制
+function getUserMaxConcurrency(userId) {
+  const user = usersData.value.find(u => u.id === userId)
+  return user?.max_concurrency ?? 10
+}
 
 // 并发统计（从会话列表中计算）
 const accountConcurrencyList = computed(() => {
   const map = new Map()
   sessions.value.forEach(s => {
     if (!map.has(s.account_id)) {
-      map.set(s.account_id, { account_id: s.account_id, concurrency: 0, max_concurrency: 5 })
+      const maxConcurrency = getAccountMaxConcurrency(s.account_id)
+      map.set(s.account_id, {
+        account_id: s.account_id,
+        concurrency: 0,
+        max_concurrency: maxConcurrency
+      })
     }
     map.get(s.account_id).concurrency++
   })
@@ -324,7 +345,12 @@ const userConcurrencyList = computed(() => {
   const map = new Map()
   sessions.value.forEach(s => {
     if (s.user_id && !map.has(s.user_id)) {
-      map.set(s.user_id, { user_id: s.user_id, concurrency: 0, max_concurrency: 10 })
+      const maxConcurrency = getUserMaxConcurrency(s.user_id)
+      map.set(s.user_id, {
+        user_id: s.user_id,
+        concurrency: 0,
+        max_concurrency: maxConcurrency
+      })
     }
     if (s.user_id) {
       map.get(s.user_id).concurrency++
@@ -357,9 +383,16 @@ function formatTime(time) {
 }
 
 function getConcurrencyClass(current, limit) {
+  if (limit <= 0) return 'success' // 无限并发总是安全状态
   if (current >= limit) return 'danger'
   if (current >= limit * 0.8) return 'warning'
   return 'success'
+}
+
+// 格式化最大并发显示
+function formatMaxConcurrency(limit) {
+  if (limit <= 0) return '∞'
+  return limit
 }
 
 // 解析会话ID，提取可读部分
@@ -473,7 +506,7 @@ async function loadSessions() {
   }
 }
 
-// 加载账号名称
+// 加载账号名称和完整数据
 async function loadAccountNames(accountIds) {
   if (!accountIds.length) return
   try {
@@ -483,6 +516,10 @@ async function loadAccountNames(accountIds) {
     // 账户列表接口返回 { items, total, page }，旧代码误用 list 导致一直回退显示 #id
     const res = await api.getAccounts({ page: 1, page_size: 1000 })
     const items = res.data?.items || res.data?.list || []
+
+    // 存储完整账户数据（用于并发限制）
+    accountsData.value = items
+
     items.forEach(acc => {
       if (acc?.id) {
         accountNames.value[acc.id] = acc.name || `账号${acc.id}`
@@ -496,6 +533,10 @@ async function loadAccountNames(accountIds) {
           const r = await api.getAccount(id)
           if (r.data?.id) {
             accountNames.value[r.data.id] = r.data.name || `账号${r.data.id}`
+            // 补充到完整数据中
+            if (!accountsData.value.find(a => a.id === r.data.id)) {
+              accountsData.value.push(r.data)
+            }
           }
         } catch {
           // ignore
@@ -507,7 +548,7 @@ async function loadAccountNames(accountIds) {
   }
 }
 
-// 加载用户名称
+// 加载用户名称和完整数据
 async function loadUserNames(userIds) {
   if (!userIds.length) return
   try {
@@ -517,6 +558,10 @@ async function loadUserNames(userIds) {
     // 后端提供不分页接口 /admin/users/all，避免分页漏掉导致名称缺失
     const res = await api.getAllUsers()
     const items = res.data?.items || res.data?.list || []
+
+    // 存储完整用户数据（用于并发限制）
+    usersData.value = items
+
     items.forEach(user => {
       if (user?.id) {
         userNames.value[user.id] = user.username || `用户${user.id}`

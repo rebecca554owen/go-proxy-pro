@@ -11,9 +11,9 @@
 package service
 
 import (
-	"go-aiproxy/internal/errormatch"
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/errormatch"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 )
 
 type ErrorRuleService struct {
@@ -125,7 +125,7 @@ func (s *ErrorRuleService) List(page, pageSize int) ([]model.ErrorRule, int64, e
 	if page < 1 {
 		page = 1
 	}
-	if pageSize < 1 || pageSize > 100 {
+	if pageSize < 1 || pageSize > 1000 {
 		pageSize = 20
 	}
 	return s.repo.List(page, pageSize)

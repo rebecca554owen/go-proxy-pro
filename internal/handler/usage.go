@@ -16,9 +16,9 @@ import (
 	"strconv"
 	"time"
 
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/internal/service"
-	"go-aiproxy/pkg/response"
+	"aiproxy/internal/repository"
+	"aiproxy/internal/service"
+	"aiproxy/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )

@@ -20,8 +20,8 @@ import (
 	"strconv"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/service"
+	"aiproxy/internal/model"
+	"aiproxy/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/proxy"

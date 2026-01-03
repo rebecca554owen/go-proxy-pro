@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
 )
 
 // RequestLogger 请求日志记录器

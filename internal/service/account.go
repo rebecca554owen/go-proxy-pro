@@ -14,10 +14,10 @@ import (
 	"errors"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/proxy/scheduler"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/proxy/scheduler"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 var (
@@ -300,7 +300,7 @@ func (s *AccountService) List(page, pageSize int, platform, status string) ([]mo
 	if page < 1 {
 		page = 1
 	}
-	if pageSize < 1 || pageSize > 100 {
+	if pageSize < 1 || pageSize > 1000 {
 		pageSize = 20
 	}
 	return s.repo.List(page, pageSize, platform, status)
@@ -389,7 +389,7 @@ func (s *AccountService) ListGroups(page, pageSize int) ([]model.AccountGroup, i
 	if page < 1 {
 		page = 1
 	}
-	if pageSize < 1 || pageSize > 100 {
+	if pageSize < 1 || pageSize > 1000 {
 		pageSize = 20
 	}
 	return s.groupRepo.List(page, pageSize)

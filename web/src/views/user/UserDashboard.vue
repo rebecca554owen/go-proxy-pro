@@ -239,7 +239,7 @@ const getQuotaColor = (pkg) => {
 const fetchStats = async () => {
   try {
     // 获取使用统计
-    const summaryRes = await api.getUserUsageSummary()
+    const summaryRes = await api.getMyUsageSummary()
     if (summaryRes.data) {
       stats.today_cost = summaryRes.data.today?.total_cost || 0
       stats.today_tokens = summaryRes.data.today?.total_tokens || 0
@@ -265,7 +265,7 @@ const fetchPackages = async () => {
 
 const fetchApiKeys = async () => {
   try {
-    const res = await api.getApiKeys()
+    const res = await api.getAPIKeys()
     apiKeys.value = res.data || []
     stats.api_key_count = apiKeys.value.length
   } catch (e) {

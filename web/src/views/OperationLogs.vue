@@ -22,15 +22,15 @@
           刷新
         </el-button>
         <el-popconfirm
-          title="确定要清理90天前的日志吗？"
+          title="确定要清理所有操作日志吗？"
           confirm-button-text="确定"
           cancel-button-text="取消"
           @confirm="handleCleanup"
         >
           <template #reference>
-            <el-button type="warning">
+            <el-button type="danger">
               <i class="fa-solid fa-broom"></i>
-              清理旧日志
+              清理日志
             </el-button>
           </template>
         </el-popconfirm>
@@ -391,7 +391,7 @@ function showDetail(row) {
 
 async function handleCleanup() {
   try {
-    const res = await api.cleanupOperationLogs(90)
+    const res = await api.cleanupOperationLogs(0)
     ElMessage.success(`清理完成，删除了 ${res.data.deleted} 条记录`)
     loadLogs()
   } catch (e) {

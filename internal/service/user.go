@@ -15,10 +15,10 @@ import (
 	"errors"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
-	"go-aiproxy/pkg/utils"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
+	"aiproxy/pkg/utils"
 
 	"gorm.io/gorm"
 )

@@ -1,12 +1,15 @@
 /*
- * 文件作用：应用配置加载，从YAML文件读取系统配置
+ * 文件作用：应用配置加载，支持 YAML 文件和环境变量
  * 负责功能：
- *   - 配置文件解析（YAML格式）
+ *   - 配置文件解析（YAML格式，可选）
+ *   - 环境变量覆盖（优先级高于 YAML）
+ *   - 内置默认值（无配置文件时使用）
  *   - 服务器/数据库/JWT/缓存配置
- *   - 配置默认值处理
- *   - 全局配置实例管理
  * 重要程度：⭐⭐⭐⭐ 重要（系统配置核心）
  * 依赖模块：yaml
+ *
+ * 配置优先级：环境变量 > YAML 文件 > 默认值
+ * 支持无文件启动，通过环境变量配置所有必需项
  */
 package config
 
@@ -108,14 +111,76 @@ func (c *CacheConfig) GetDefaultConcurrencyMax() int {
 var Cfg *Config
 
 func Load(path string) error {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return fmt.Errorf("read config file: %w", err)
+	// 设置默认配置
+	Cfg = &Config{
+		Server: ServerConfig{
+			Port: 8080,
+			Mode: "release",
+		},
+		MySQL: MySQLConfig{
+			Host:         "localhost",
+			Port:         3306,
+			User:         "root",
+			Password:     "",
+			Database:     "aiproxy",
+			Charset:      "utf8mb4",
+			MaxIdleConns: 10,
+			MaxOpenConns: 100,
+		},
+		JWT: JWTConfig{
+			Secret:      "change-me-in-production",
+			ExpireHours: 24 * 7,
+		},
+		Log: LogConfig{
+			Dir:   "logs",
+			Level: "info",
+		},
+		Cache: CacheConfig{
+			SessionTTL:            60,
+			SessionRenewalTTL:     14,
+			UnavailableTTL:        5,
+			ConcurrencyTTL:        5,
+			DefaultConcurrencyMax: 5,
+		},
 	}
 
-	Cfg = &Config{}
-	if err := yaml.Unmarshal(data, Cfg); err != nil {
-		return fmt.Errorf("parse config: %w", err)
+	// 尝试读取配置文件（如果存在）
+	data, err := os.ReadFile(path)
+	if err == nil {
+		// 文件存在，解析 YAML
+		if err := yaml.Unmarshal(data, Cfg); err != nil {
+			return fmt.Errorf("parse config: %w", err)
+		}
+	}
+	// 文件不存在时不报错，使用默认配置 + 环境变量
+
+	// 环境变量覆盖（优先级高于 YAML）
+	if port := os.Getenv("PORT"); port != "" {
+		fmt.Sscanf(port, "%d", &Cfg.Server.Port)
+	}
+	if host := os.Getenv("DB_HOST"); host != "" {
+		Cfg.MySQL.Host = host
+	}
+	if port := os.Getenv("DB_PORT"); port != "" {
+		fmt.Sscanf(port, "%d", &Cfg.MySQL.Port)
+	}
+	if user := os.Getenv("DB_USER"); user != "" {
+		Cfg.MySQL.User = user
+	}
+	if password := os.Getenv("DB_PASSWORD"); password != "" {
+		Cfg.MySQL.Password = password
+	}
+	if dbname := os.Getenv("DB_NAME"); dbname != "" {
+		Cfg.MySQL.Database = dbname
+	}
+	if secret := os.Getenv("JWT_SECRET"); secret != "" {
+		Cfg.JWT.Secret = secret
+	}
+	if logDir := os.Getenv("LOG_DIR"); logDir != "" {
+		Cfg.Log.Dir = logDir
+	}
+	if logLevel := os.Getenv("LOG_LEVEL"); logLevel != "" {
+		Cfg.Log.Level = logLevel
 	}
 
 	return nil

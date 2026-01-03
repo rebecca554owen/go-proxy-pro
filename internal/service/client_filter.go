@@ -18,9 +18,9 @@ import (
 	"strings"
 	"sync"
 
-	"go-aiproxy/internal/model"
-	"go-aiproxy/internal/repository"
-	"go-aiproxy/pkg/logger"
+	"aiproxy/internal/model"
+	"aiproxy/internal/repository"
+	"aiproxy/pkg/logger"
 )
 
 // ClientFilterService 客户端过滤服务

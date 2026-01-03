@@ -11,7 +11,7 @@
 package repository
 
 import (
-	"go-aiproxy/internal/model"
+	"aiproxy/internal/model"
 	"time"
 
 	"gorm.io/gorm"
@@ -82,10 +82,16 @@ func (r *OperationLogRepository) GetByID(id uint) (*model.OperationLog, error) {
 	return &log, nil
 }
 
-// DeleteOldLogs 删除指定天数之前的日志
+// DeleteOldLogs 删除指定天数之前的日志（days=0 表示删除所有）
 func (r *OperationLogRepository) DeleteOldLogs(days int) (int64, error) {
-	cutoff := time.Now().AddDate(0, 0, -days)
-	result := r.db.Where("created_at < ?", cutoff).Delete(&model.OperationLog{})
+	var result *gorm.DB
+	if days == 0 {
+		// 删除所有日志
+		result = r.db.Where("1 = 1").Delete(&model.OperationLog{})
+	} else {
+		cutoff := time.Now().AddDate(0, 0, -days)
+		result = r.db.Where("created_at < ?", cutoff).Delete(&model.OperationLog{})
+	}
 	return result.RowsAffected, result.Error
 }
 

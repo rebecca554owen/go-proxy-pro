@@ -13,7 +13,7 @@ package repository
 import (
 	"strings"
 
-	"go-aiproxy/internal/model"
+	"aiproxy/internal/model"
 
 	"gorm.io/gorm"
 )

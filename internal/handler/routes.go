@@ -12,8 +12,8 @@
 package handler
 
 import (
-	"go-aiproxy/internal/middleware"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/middleware"
+	"aiproxy/internal/repository"
 
 	"github.com/gin-gonic/gin"
 )

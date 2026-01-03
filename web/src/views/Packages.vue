@@ -36,7 +36,7 @@
         </el-table-column>
         <el-table-column prop="duration" label="有效期" width="80">
           <template #default="{ row }">
-            {{ row.duration }}天
+            {{ row.duration === null || row.duration === undefined ? '永久' : row.duration + '天' }}
           </template>
         </el-table-column>
         <el-table-column label="额度限制" min-width="200">
@@ -86,7 +86,8 @@
     <el-dialog
       v-model="dialogVisible"
       :title="editMode ? '编辑套餐' : '创建套餐'"
-      width="600"
+      width="90%"
+      custom-class="dialog-small"
       :close-on-click-modal="false"
     >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
@@ -107,7 +108,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="有效期(天)" prop="duration">
-              <el-input-number v-model="form.duration" :min="1" style="width: 100%" />
+              <el-input-number v-model="form.duration" :min="1" :controls="false" placeholder="留空表示永久" style="width: 100%" />
+              <div class="form-tip-inline">留空表示永久</div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -196,7 +198,7 @@ const form = ref({
   name: '',
   type: 'subscription',
   price: 0,
-  duration: 30,
+  duration: null,  // null 表示永久套餐
   daily_quota: 0,
   weekly_quota: 0,
   monthly_quota: 0,
@@ -250,7 +252,7 @@ function showCreateDialog() {
     name: '',
     type: 'subscription',
     price: 0,
-    duration: 30,
+    duration: null,  // null 表示永久套餐
     daily_quota: 0,
     weekly_quota: 0,
     monthly_quota: 0,
@@ -274,11 +276,11 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    // 确保数值字段是数字类型
+    // 确保数值字段是数字类型，duration 为空时发送 null（永久套餐）
     const data = {
       ...form.value,
       price: parseFloat(form.value.price) || 0,
-      duration: parseInt(form.value.duration) || 30,
+      duration: form.value.duration === '' || form.value.duration === null || form.value.duration === undefined ? null : parseInt(form.value.duration),
       daily_quota: parseFloat(form.value.daily_quota) || 0,
       weekly_quota: parseFloat(form.value.weekly_quota) || 0,
       monthly_quota: parseFloat(form.value.monthly_quota) || 0,
@@ -355,5 +357,12 @@ onMounted(() => {
   margin-left: 8px;
   font-size: 12px;
   color: #909399;
+}
+</style>
+
+<style>
+/* 对话框自适应宽度 */
+.dialog-small {
+  max-width: 600px;
 }
 </style>

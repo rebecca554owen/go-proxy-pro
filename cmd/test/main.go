@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"go-aiproxy/internal/config"
-	"go-aiproxy/internal/repository"
+	"aiproxy/internal/config"
+	"aiproxy/internal/repository"
 )
 
 func main() {
