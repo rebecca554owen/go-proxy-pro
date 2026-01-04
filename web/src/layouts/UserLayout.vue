@@ -5,13 +5,25 @@
  *   - 顶部导航栏
  *   - 侧边菜单
  *   - 内容区域
- * 重要程度：⭐⭐⭐⭐ 重要（用户界面框架）
+ *   - 移动端抽屉式菜单
+ * 重要程度：⭐⭐⭐⭐⭐ 核心（用户界面框架 + 响应式）
 -->
 <template>
   <el-container class="user-layout">
+    <!-- 移动端遮罩 -->
+    <div
+      v-if="isMobile && sidebarVisible"
+      class="sidebar-overlay"
+      @click="sidebarVisible = false"
+    ></div>
+
     <!-- 顶部导航 -->
     <el-header class="header">
       <div class="header-left">
+        <!-- 移动端菜单按钮 -->
+        <el-icon v-if="isMobile" class="menu-btn" @click="sidebarVisible = !sidebarVisible">
+          <Menu />
+        </el-icon>
         <div class="logo">
           <el-icon :size="24"><Monitor /></el-icon>
           <span class="logo-text">AiProxy 用户中心</span>
@@ -45,7 +57,10 @@
 
     <el-container class="main-container">
       <!-- 侧边菜单 -->
-      <el-aside :width="isCollapse ? '64px' : '200px'" class="aside">
+      <el-aside
+        :width="isMobile ? '200px' : (isCollapse ? '64px' : '200px')"
+        :class="{ 'aside': true, 'mobile-visible': sidebarVisible }"
+      >
         <el-menu
           :default-active="activeMenu"
           :collapse="isCollapse"
@@ -70,7 +85,7 @@
           </el-menu-item>
         </el-menu>
 
-        <div class="collapse-btn" @click="isCollapse = !isCollapse">
+        <div v-if="!isMobile" class="collapse-btn" @click="isCollapse = !isCollapse">
           <el-icon v-if="isCollapse"><Expand /></el-icon>
           <el-icon v-else><Fold /></el-icon>
         </div>
@@ -85,13 +100,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { prefetchChunk } from '@/prefetch'
 import {
   Monitor, ArrowDown, User, Setting, SwitchButton,
-  DataAnalysis, Key, Box, Document, Expand, Fold
+  DataAnalysis, Key, Box, Document, Expand, Fold, Menu
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
@@ -99,6 +114,25 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const isCollapse = ref(false)
+const isMobile = ref(false)
+const sidebarVisible = ref(false)
+
+// 移动端检测
+function checkMobile() {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    sidebarVisible.value = false
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 const activeMenu = computed(() => route.path)
 
@@ -147,6 +181,50 @@ const handleCommand = (command) => {
   align-items: center;
   padding: 0 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 移动端菜单按钮 */
+@media (max-width: 768px) {
+  .menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 12px;
+    color: white;
+  }
+}
+
+/* 移动端侧边栏抽屉模式 */
+@media (max-width: 768px) {
+  .aside {
+    position: fixed !important;
+    z-index: 2000;
+    height: calc(100vh - 60px);
+    top: 60px;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+
+  .aside.mobile-visible {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+  }
+
+  .logo-text {
+    font-size: 14px;
+  }
+
+  .username {
+    display: none;
+  }
 }
 
 .header-left {

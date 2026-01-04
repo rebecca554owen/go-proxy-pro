@@ -8,6 +8,7 @@
  *   - Token刷新和强制恢复
  * 重要程度：⭐⭐⭐⭐⭐ 核心（账户管理）
  * 依赖模块：element-plus, AccountForm组件, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="accounts-page">
@@ -55,7 +56,7 @@
     </div>
 
     <!-- 筛选和搜索 -->
-    <div class="filter-bar">
+    <div class="filter-bar flex-responsive">
       <div class="filter-left">
         <el-select v-model="filters.status" clearable placeholder="状态筛选" @change="loadAccounts">
           <el-option label="正常" value="valid" />
@@ -87,7 +88,8 @@
 
     <!-- 账户列表 -->
     <el-card class="accounts-table-card" shadow="never">
-      <el-table
+      <div class="table-responsive">
+        <el-table
         :data="accounts"
         v-loading="loading"
         stripe
@@ -366,6 +368,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <!-- 分页 -->
       <div class="table-footer">

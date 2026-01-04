@@ -1,0 +1,131 @@
+/*
+ * 文件作用：全局样式入口文件
+ * 负责功能：
+ *   - 导入所有样式模块
+ *   - 全局样式重置
+ *   - Element Plus 样式覆盖
+ *   - 移动端基础优化
+ * 重要程度：⭐⭐⭐⭐⭐ 核心（全局样式入口）
+ * 依赖模块：variables.css, responsive.css, themes/default.css
+ */
+@import './variables.css';
+@import './responsive.css';
+@import './themes/default.css';
+
+/* 全局重置 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Element Plus 样式覆盖 */
+.el-dialog {
+  border-radius: var(--radius-lg) !important;
+}
+
+.el-card {
+  border-radius: var(--radius-lg) !important;
+}
+
+.el-button {
+  border-radius: var(--radius-md) !important;
+}
+
+.el-input__inner,
+.el-textarea__inner {
+  border-radius: var(--radius-md) !important;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  /* 按钮尺寸优化 */
+  .el-button {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+  }
+
+  .el-button--small {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+  }
+
+  /* 输入框字体大小（防止 iOS 自动缩放） */
+  .el-input__inner,
+  .el-textarea__inner {
+    font-size: 16px !important;
+  }
+
+  /* 下拉选择器 */
+  .el-select {
+    width: 100% !important;
+  }
+
+  /* 对话框 */
+  .el-dialog {
+    margin: 0 auto !important;
+  }
+
+  /* 卡片间距 */
+  .el-card {
+    margin-bottom: 12px;
+  }
+
+  /* 表格行高 */
+  .el-table .cell {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
+/* 触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 增加触摸目标大小 */
+  .el-button {
+    min-height: 44px;
+  }
+
+  .el-icon {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* 滚动条样式（可选） */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-placeholder);
+}

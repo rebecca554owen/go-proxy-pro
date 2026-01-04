@@ -5,6 +5,7 @@
  *   - 按日期/模型筛选
  *   - Token 和费用统计
  * 重要程度：⭐⭐⭐⭐ 重要（用户核心功能）
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="my-usage-records">
@@ -71,7 +72,8 @@
 
     <!-- 记录列表 -->
     <el-card shadow="hover">
-      <el-table :data="records" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="records" v-loading="loading" stripe>
         <el-table-column label="时间" width="160">
           <template #default="{ row }">
             {{ formatTime(row.request_time || row.timestamp) }}
@@ -114,6 +116,7 @@
         </el-table-column>
         <el-table-column prop="request_ip" label="IP" width="120" show-overflow-tooltip />
       </el-table>
+      </div>
 
       <div class="pagination-wrap" v-if="pagination.total > 0">
         <el-pagination

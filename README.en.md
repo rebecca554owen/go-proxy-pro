@@ -128,7 +128,7 @@ docker run -d \
 
 ```bash
 # Build backend
-go build -o aiproxy ./cmd/server
+go build -o aiproxy .
 
 # Run
 ./aiproxy
@@ -191,7 +191,8 @@ curl http://localhost:8080/responses \
 
 ```
 AiProxy/
-├── cmd/server/          # Application entry point
+├── cmd/server/          # Application entry point (reserved)
+├── main.go              # Application entry file
 ├── internal/
 │   ├── handler/         # HTTP handlers
 │   ├── middleware/      # JWT, API Key auth, etc.

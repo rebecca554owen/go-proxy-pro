@@ -7,6 +7,7 @@
  *   - 请求验证测试
  * 重要程度：⭐⭐⭐ 一般（安全配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="client-filter-page">

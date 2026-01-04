@@ -30,6 +30,7 @@ import {
   Filter,
   Fold,
   Key,
+  Menu,
   Money,
   Monitor,
   More,
@@ -50,6 +51,9 @@ import {
   Warning
 } from '@element-plus/icons-vue'
 import 'element-plus/dist/index.css'
+
+// 引入全局样式（响应式设计）
+import '@/styles/index.css'
 
 import App from './App.vue'
 import router from './router'
@@ -76,6 +80,7 @@ const icons = {
   Filter,
   Fold,
   Key,
+  Menu,
   Money,
   Monitor,
   More,

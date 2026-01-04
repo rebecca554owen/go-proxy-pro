@@ -7,6 +7,7 @@
  *   - 支持URL快速导入
  * 重要程度：⭐⭐⭐ 一般（代理配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="proxies-page">
@@ -29,7 +30,7 @@
     </div>
 
     <!-- 搜索栏 -->
-    <div class="filter-bar">
+    <div class="filter-bar flex-responsive">
       <el-input
         v-model="keyword"
         placeholder="搜索代理名称、地址..."
@@ -45,7 +46,8 @@
 
     <!-- 代理列表 -->
     <el-card class="proxies-table-card" shadow="never">
-      <el-table :data="proxies" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="proxies" v-loading="loading" stripe>
         <el-table-column label="代理名称" min-width="180">
           <template #default="{ row }">
             <div class="proxy-name-cell">
@@ -156,6 +158,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <!-- 分页 -->
       <div class="table-footer">
@@ -174,7 +177,8 @@
     <el-dialog
       v-model="dialogVisible"
       :title="isEdit ? '编辑代理' : '添加代理'"
-      width="500px"
+      width="90%"
+      class="responsive-dialog"
       :close-on-click-modal="false"
     >
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
@@ -208,12 +212,12 @@
         </el-form-item>
 
         <el-row :gutter="16">
-          <el-col :span="16">
+          <el-col :xs="24" :sm="16">
             <el-form-item label="主机地址" prop="host">
               <el-input v-model="form.host" placeholder="例如: 127.0.0.1 或 proxy.example.com" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item label="端口" prop="port">
               <el-input-number v-model="form.port" :min="1" :max="65535" style="width: 100%" />
             </el-form-item>
@@ -223,12 +227,12 @@
         <el-divider content-position="left">认证配置（可选）</el-divider>
 
         <el-row :gutter="16">
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item label="用户名">
               <el-input v-model="form.username" placeholder="代理认证用户名" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item label="密码">
               <el-input v-model="form.password" type="password" show-password placeholder="代理认证密码" />
             </el-form-item>

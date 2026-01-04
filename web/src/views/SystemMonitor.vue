@@ -8,6 +8,7 @@
  *   - 缓存和MySQL状态
  * 重要程度：⭐⭐⭐⭐ 重要（运维监控）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="system-monitor">
@@ -21,7 +22,7 @@
 
     <!-- 今日使用概览 -->
     <el-row :gutter="16" class="stat-row">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-icon cost-icon">
             <el-icon><Money /></el-icon>
@@ -32,7 +33,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-icon token-icon">
             <el-icon><Coin /></el-icon>
@@ -43,7 +44,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-icon request-icon">
             <el-icon><Connection /></el-icon>
@@ -54,7 +55,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-icon user-icon">
             <el-icon><User /></el-icon>
@@ -69,7 +70,7 @@
 
     <!-- 总使用概览 -->
     <el-row :gutter="16" class="stat-row">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card total">
           <div class="stat-icon total-cost-icon">
             <el-icon><Money /></el-icon>
@@ -80,7 +81,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card total">
           <div class="stat-icon total-token-icon">
             <el-icon><Coin /></el-icon>
@@ -91,7 +92,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card total">
           <div class="stat-icon total-request-icon">
             <el-icon><Connection /></el-icon>
@@ -102,7 +103,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6">
         <el-card shadow="hover" class="stat-card total">
           <div class="stat-icon total-cache-icon">
             <el-icon><Files /></el-icon>
@@ -117,7 +118,7 @@
 
     <!-- Token 详情 -->
     <el-row :gutter="16" class="section-row">
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -140,7 +141,7 @@
           </el-descriptions>
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -178,25 +179,25 @@
             </div>
           </template>
           <el-row :gutter="16">
-            <el-col :span="6">
+            <el-col :xs="12" :sm="6">
               <div class="account-stat">
                 <div class="account-value">{{ data.accounts?.total || 0 }}</div>
                 <div class="account-label">总账号</div>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :xs="12" :sm="6">
               <div class="account-stat success">
                 <div class="account-value">{{ data.accounts?.active || 0 }}</div>
                 <div class="account-label">正常可用</div>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :xs="12" :sm="6">
               <div class="account-stat warning">
                 <div class="account-value">{{ data.accounts?.rate_limited || 0 }}</div>
                 <div class="account-label">限流中</div>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :xs="12" :sm="6">
               <div class="account-stat danger">
                 <div class="account-value">{{ data.accounts?.invalid || 0 }}</div>
                 <div class="account-label">无效/禁用</div>
@@ -209,7 +210,7 @@
 
     <!-- 系统资源 -->
     <el-row :gutter="16" class="section-row">
-      <el-col :span="8">
+      <el-col :xs="24" :md="8">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -225,7 +226,7 @@
           />
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :xs="24" :md="8">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -244,7 +245,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :xs="24" :md="8">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -267,7 +268,7 @@
 
     <!-- 数据库状态 -->
     <el-row :gutter="16" class="section-row">
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -291,7 +292,7 @@
           </el-descriptions>
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">

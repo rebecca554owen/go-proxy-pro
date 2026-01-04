@@ -7,6 +7,7 @@
  *   - 实时日志追踪
  * 重要程度：⭐⭐ 辅助（运维日志）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="system-logs-page">
@@ -35,7 +36,7 @@
 
     <el-row :gutter="20">
       <!-- 左侧：文件列表 -->
-      <el-col :span="8">
+      <el-col :xs="24" :md="8">
         <el-card class="file-list-card">
           <template #header>
             <div class="card-header">
@@ -110,7 +111,7 @@
       </el-col>
 
       <!-- 右侧：日志内容 -->
-      <el-col :span="16">
+      <el-col :xs="24" :md="16">
         <el-card class="log-content-card">
           <template #header>
             <div class="card-header">

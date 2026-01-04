@@ -7,6 +7,7 @@
  *   - 模型限制配置
  * 重要程度：⭐⭐⭐⭐ 重要（套餐配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="packages-page">
@@ -19,7 +20,8 @@
 
     <!-- 套餐列表 -->
     <el-card>
-      <el-table :data="packages" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="packages" v-loading="loading" stripe>
         <el-table-column prop="id" label="ID" width="60" />
         <el-table-column prop="name" label="名称" width="120" />
         <el-table-column prop="type" label="类型" width="80">
@@ -80,6 +82,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <!-- 创建/编辑套餐弹窗 -->
@@ -87,7 +90,7 @@
       v-model="dialogVisible"
       :title="editMode ? '编辑套餐' : '创建套餐'"
       width="90%"
-      custom-class="dialog-small"
+      class="responsive-dialog"
       :close-on-click-modal="false"
     >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
@@ -101,12 +104,12 @@
           </el-select>
         </el-form-item>
         <el-row :gutter="16">
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item label="价格($)" prop="price">
               <el-input-number v-model="form.price" :min="0" :precision="2" style="width: 100%" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item label="有效期(天)" prop="duration">
               <el-input-number v-model="form.duration" :min="1" :controls="false" placeholder="留空表示永久" style="width: 100%" />
               <div class="form-tip-inline">留空表示永久</div>

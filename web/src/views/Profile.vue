@@ -6,13 +6,14 @@
  *   - 用户配置保存
  * 重要程度：⭐⭐ 辅助（用户配置）
  * 依赖模块：element-plus, user store, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="profile-page">
     <h2>个人设置</h2>
 
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card header="基本信息">
           <el-form :model="profileForm" label-width="80px">
             <el-form-item label="用户名">
@@ -30,7 +31,7 @@
         </el-card>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card header="修改密码">
           <el-form ref="pwdFormRef" :model="pwdForm" :rules="pwdRules" label-width="80px">
             <el-form-item label="原密码" prop="old_password">

@@ -1,0 +1,194 @@
+/*
+ * 文件作用：响应式工具类和移动端适配样式
+ * 负责功能：
+ *   - 弹窗响应式
+ *   - 表格横向滚动
+ *   - 显示/隐藏工具类
+ *   - Flex 响应式布局
+ *   - 侧边栏抽屉模式
+ * 重要程度：⭐⭐⭐⭐⭐ 核心（响应式设计核心）
+ * 依赖模块：variables.css
+ */
+
+/* 弹窗响应式 */
+.responsive-dialog {
+  width: 90% !important;
+  max-width: 800px !important;
+}
+
+@media (max-width: 768px) {
+  .responsive-dialog {
+    width: 95% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+  }
+
+  .responsive-dialog .el-dialog__body {
+    padding: 15px !important;
+  }
+
+  .responsive-dialog .el-dialog__header {
+    padding: 15px !important;
+  }
+}
+
+/* 表格横向滚动 */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive .el-table {
+  min-width: 800px;
+}
+
+/* 隐藏移动端特定元素 */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* 仅移动端显示 */
+@media (min-width: 769px) {
+  .show-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Flex 响应式 */
+.flex-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .flex-responsive {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .flex-responsive > * {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+/* 侧边栏抽屉模式 */
+@media (max-width: 768px) {
+  .layout-aside {
+    position: fixed !important;
+    z-index: var(--z-sidebar);
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .layout-aside.mobile-visible {
+    transform: translateX(0);
+  }
+
+  /* 遮罩层 */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--z-sidebar-overlay);
+  }
+}
+
+/* 移动端卡片视图 */
+@media (max-width: 768px) {
+  .mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mobile-card {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .card-item:last-child {
+    border-bottom: none;
+  }
+
+  .card-label {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+
+  .card-value {
+    color: var(--color-text);
+    text-align: right;
+  }
+}
+
+/* 平台统计卡片响应式 */
+.platform-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .platform-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* 筛选栏响应式 */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-bar > * {
+    width: 100%;
+  }
+}
+
+/* 分页响应式 */
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .table-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .el-pagination {
+    width: 100%;
+  }
+}

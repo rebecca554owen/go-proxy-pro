@@ -6,6 +6,7 @@
  *   - API Key 统计
  *   - 最近使用趋势
  * 重要程度：⭐⭐⭐⭐ 重要（用户首页）
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="user-dashboard">

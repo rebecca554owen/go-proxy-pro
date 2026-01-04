@@ -7,6 +7,7 @@
  *   - 历史日志清理
  * 重要程度：⭐⭐ 辅助（审计日志）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="operation-logs-page">
@@ -38,7 +39,7 @@
     </div>
 
     <!-- 筛选栏 -->
-    <div class="filter-bar">
+    <div class="filter-bar flex-responsive">
       <el-select v-model="filters.module" clearable placeholder="模块" @change="handleFilterChange" style="width: 120px">
         <el-option label="认证" value="auth" />
         <el-option label="用户" value="user" />
@@ -84,7 +85,8 @@
 
     <!-- 日志列表 -->
     <el-card class="logs-table-card" shadow="never">
-      <el-table :data="logs" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="logs" v-loading="loading" stripe>
         <el-table-column label="#" width="60" align="center">
           <template #default="{ $index }">
             <span class="row-index">{{ (pagination.page - 1) * pagination.pageSize + $index + 1 }}</span>
@@ -165,6 +167,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <!-- 分页 -->
       <div class="table-footer">
@@ -180,7 +183,7 @@
     </el-card>
 
     <!-- 详情弹窗 -->
-    <el-dialog v-model="showDetailDialog" title="操作日志详情" width="600px">
+    <el-dialog v-model="showDetailDialog" title="操作日志详情" width="90%" class="responsive-dialog">
       <el-descriptions :column="2" border v-if="currentLog">
         <el-descriptions-item label="ID">{{ currentLog.id }}</el-descriptions-item>
         <el-descriptions-item label="时间">{{ formatTime(currentLog.created_at) }}</el-descriptions-item>

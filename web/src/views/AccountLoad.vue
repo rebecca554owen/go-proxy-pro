@@ -7,6 +7,7 @@
  *   - 负载可视化进度条
  * 重要程度：⭐⭐⭐ 一般（负载监控）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="load-page">
@@ -44,7 +45,8 @@
 
     <!-- 负载列表 -->
     <el-card>
-      <el-table :data="loadStats" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="loadStats" v-loading="loading" stripe>
         <el-table-column prop="account_id" label="ID" width="70" />
         <el-table-column prop="account_name" label="账户名称" min-width="150" />
         <el-table-column prop="platform" label="平台" width="100">
@@ -98,6 +100,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
   </div>
 </template>

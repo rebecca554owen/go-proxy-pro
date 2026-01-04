@@ -7,6 +7,7 @@
  *   - 平台筛选和状态切换
  * 重要程度：⭐⭐⭐⭐ 重要（模型配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="models-page">
@@ -17,7 +18,7 @@
     <!-- Tab 切换 -->
     <el-tabs v-model="activeTab" class="models-tabs">
       <el-tab-pane label="模型列表" name="models">
-        <div class="tab-header">
+        <div class="tab-header flex-responsive">
           <el-select v-model="filterPlatform" placeholder="筛选平台" clearable style="width: 150px; margin-right: 12px;">
             <el-option label="全部" value="" />
             <el-option label="Claude" value="claude" />
@@ -29,6 +30,7 @@
           </el-button>
         </div>
 
+        <div class="table-responsive">
         <el-table :data="filteredModels" v-loading="loading" stripe>
           <el-table-column prop="name" label="模型名称" min-width="200">
             <template #default="{ row }">
@@ -69,10 +71,11 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
       </el-tab-pane>
 
       <el-tab-pane label="模型映射" name="mappings">
-        <div class="tab-header">
+        <div class="tab-header flex-responsive">
           <div class="mapping-info">
             <el-alert
               type="info"
@@ -93,6 +96,7 @@
           </div>
         </div>
 
+        <div class="table-responsive">
         <el-table :data="mappings" v-loading="mappingLoading" stripe>
           <el-table-column prop="source_model" label="源模型" min-width="200">
             <template #default="{ row }">
@@ -127,6 +131,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <!-- 缓存统计 -->
         <div class="cache-stats" v-if="mappingCacheStats">
@@ -150,7 +155,7 @@
     </el-tabs>
 
     <!-- 添加/编辑模型对话框 -->
-    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑模型' : '添加模型'" width="600px">
+    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑模型' : '添加模型'" width="90%" class="responsive-dialog">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
         <el-row :gutter="16">
           <el-col :span="12">
@@ -252,7 +257,7 @@
     </el-dialog>
 
     <!-- 添加/编辑映射对话框 -->
-    <el-dialog v-model="mappingDialogVisible" :title="isMappingEdit ? '编辑映射' : '添加映射'" width="500px">
+    <el-dialog v-model="mappingDialogVisible" :title="isMappingEdit ? '编辑映射' : '添加映射'" width="90%" class="responsive-dialog">
       <el-form :model="mappingForm" :rules="mappingRules" ref="mappingFormRef" label-width="100px">
         <el-form-item label="源模型" prop="source_model">
           <el-select

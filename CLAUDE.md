@@ -323,7 +323,8 @@ type Adapter interface {
 
 ```
 aiproxy/
-├── cmd/server/              # 程序入口
+├── cmd/server/              # 程序入口（预留目录）
+├── main.go                  # 程序入口文件
 ├── internal/
 │   ├── handler/             # HTTP 处理器（平台路由）
 │   ├── middleware/          # JWT、API Key、并发控制等中间件

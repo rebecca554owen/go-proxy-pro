@@ -7,6 +7,7 @@
  *   - 不可用账号管理
  * 重要程度：⭐⭐⭐ 一般（缓存管理）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="cache-page">
@@ -206,7 +207,7 @@
       <!-- 并发统计 -->
       <el-tab-pane label="并发统计" name="concurrency">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :xs="24" :md="12">
             <el-card>
               <template #header>
                 <div class="card-header">
@@ -236,7 +237,7 @@
               </el-table>
             </el-card>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :md="12">
             <el-card>
               <template #header>
                 <div class="card-header">

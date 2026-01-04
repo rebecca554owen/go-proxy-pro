@@ -7,6 +7,7 @@
  *   - 分级检测策略配置
  * 重要程度：⭐⭐⭐⭐ 重要（系统配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="settings-page">
@@ -16,7 +17,7 @@
 
     <el-row :gutter="20">
       <!-- 安全配置 -->
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card class="config-card">
           <template #header>
             <div class="card-header">
@@ -73,7 +74,7 @@
       </el-col>
 
       <!-- 记录配置 -->
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card class="config-card">
           <template #header>
             <div class="card-header">
@@ -125,7 +126,7 @@
 
     <el-row :gutter="20" style="margin-top: 20px;">
       <!-- 账号健康检查配置 -->
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card class="config-card">
           <template #header>
             <div class="card-header">
@@ -209,7 +210,7 @@
       </el-col>
 
       <!-- 分级检测策略 -->
-      <el-col :span="12">
+      <el-col :xs="24" :md="12">
         <el-card class="config-card">
           <template #header>
             <div class="card-header">
@@ -349,7 +350,7 @@
     </el-row>
 
     <!-- 健康检测状态弹窗 -->
-    <el-dialog v-model="healthStatusVisible" title="健康检测服务状态" width="600px">
+    <el-dialog v-model="healthStatusVisible" title="健康检测服务状态" width="90%" class="responsive-dialog">
       <el-descriptions :column="2" border v-if="healthStatus">
         <el-descriptions-item label="服务状态">
           <el-tag :type="healthStatus.running ? 'success' : 'danger'">

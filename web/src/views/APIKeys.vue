@@ -7,6 +7,7 @@
  *   - 费用统计
  * 重要程度：⭐⭐⭐⭐ 重要（密钥管理）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="apikeys-page">
@@ -16,7 +17,8 @@
 
     <!-- API Key 列表 -->
     <el-card>
-      <el-table :data="apiKeys" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="apiKeys" v-loading="loading" stripe>
         <el-table-column prop="id" label="ID" width="60" />
         <el-table-column label="Key" min-width="280">
           <template #default="{ row }">
@@ -66,6 +68,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <!-- 分页 -->
       <div class="pagination">
@@ -81,7 +84,7 @@
     </el-card>
 
     <!-- 使用日志弹窗 -->
-    <el-dialog v-model="logDialogVisible" :title="`${currentKey?.key_prefix} 使用日志`" width="1000px" top="5vh">
+    <el-dialog v-model="logDialogVisible" :title="`${currentKey?.key_prefix} 使用日志`" width="90%" class="responsive-dialog">
       <div class="log-header">
         <el-tag type="info">用户: {{ currentKey?.user?.username }}</el-tag>
         <el-tag type="success">请求数: {{ currentKey?.request_count || 0 }}</el-tag>

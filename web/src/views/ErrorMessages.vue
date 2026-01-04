@@ -7,6 +7,7 @@
  *   - 自动账户禁用/限流规则
  * 重要程度：⭐⭐⭐ 一般（错误处理配置）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="error-config-page">
@@ -26,7 +27,8 @@
           <el-button @click="refreshMessageCache" :loading="refreshingMessages" size="small">刷新缓存</el-button>
         </div>
 
-        <el-table :data="messages" v-loading="loadingMessages" stripe style="margin-top: 15px">
+        <div class="table-responsive">
+          <el-table :data="messages" v-loading="loadingMessages" stripe style="margin-top: 15px">
           <el-table-column prop="code" label="状态码" width="100">
             <template #default="{ row }">
               <el-tag :type="getCodeType(row.code)">{{ row.code }}</el-tag>
@@ -56,6 +58,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
       </el-tab-pane>
 
       <!-- Tab 2: 错误规则配置 -->
@@ -88,7 +91,8 @@
           </div>
         </div>
 
-        <el-table :data="rules" v-loading="loadingRules" stripe>
+        <div class="table-responsive">
+          <el-table :data="rules" v-loading="loadingRules" stripe>
           <el-table-column prop="target_status" label="处理方式" width="130">
             <template #default="{ row }">
               <el-tag :type="getTargetStatusType(row.target_status)" effect="dark">
@@ -132,6 +136,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <div class="pagination-container">
           <el-pagination
@@ -148,7 +153,7 @@
     </el-tabs>
 
     <!-- 错误消息对话框 -->
-    <el-dialog v-model="messageDialogVisible" :title="isEditMessage ? '编辑错误消息' : '新增错误消息'" width="500px">
+    <el-dialog v-model="messageDialogVisible" :title="isEditMessage ? '编辑错误消息' : '新增错误消息'" width="90%" class="responsive-dialog">
       <el-form ref="messageFormRef" :model="messageForm" :rules="messageFormRules" label-width="100px">
         <el-form-item label="状态码" prop="code">
           <el-select v-model="messageForm.code" :disabled="isEditMessage" style="width: 100%">
@@ -181,7 +186,7 @@
     </el-dialog>
 
     <!-- 错误规则对话框 -->
-    <el-dialog v-model="ruleDialogVisible" :title="isEditRule ? '编辑规则' : '新增规则'" width="550px">
+    <el-dialog v-model="ruleDialogVisible" :title="isEditRule ? '编辑规则' : '新增规则'" width="90%" class="responsive-dialog">
       <el-form ref="ruleFormRef" :model="ruleForm" :rules="ruleFormRules" label-width="110px">
         <el-form-item label="HTTP状态码" prop="http_status_code">
           <el-input-number v-model="ruleForm.http_status_code" :min="0" :max="599" :controls="false" placeholder="0" style="width: 120px" />

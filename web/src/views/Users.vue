@@ -8,6 +8,7 @@
  *   - 用户使用统计查看
  * 重要程度：⭐⭐⭐⭐⭐ 核心（用户管理）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="users-page">
@@ -25,7 +26,8 @@
 
     <!-- 用户列表 -->
     <el-card>
-      <el-table :data="users" v-loading="loading" stripe @selection-change="handleSelectionChange">
+      <div class="table-responsive">
+        <el-table :data="users" v-loading="loading" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="username" label="用户名" />
@@ -94,6 +96,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <!-- 分页 -->
       <div class="pagination">
@@ -109,7 +112,7 @@
     </el-card>
 
     <!-- 编辑弹窗 -->
-    <el-dialog v-model="dialogVisible" title="编辑用户" width="90%" custom-class="dialog-small">
+    <el-dialog v-model="dialogVisible" title="编辑用户" width="90%" class="responsive-dialog">
       <el-form ref="formRef" :model="editForm" :rules="rules" label-width="80px">
         <el-form-item label="用户名">
           <el-input :value="editForm.username" disabled />
@@ -145,7 +148,7 @@
     </el-dialog>
 
     <!-- 创建用户弹窗 -->
-    <el-dialog v-model="createUserDialogVisible" title="创建用户" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
+    <el-dialog v-model="createUserDialogVisible" title="创建用户" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-form ref="createUserFormRef" :model="createUserForm" :rules="createUserRules" label-width="80px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="createUserForm.username" placeholder="请输入用户名" />
@@ -184,7 +187,7 @@
     </el-dialog>
 
     <!-- 批量设置倍率弹窗 -->
-    <el-dialog v-model="batchRateDialogVisible" title="批量设置价格倍率" width="90%" custom-class="dialog-small">
+    <el-dialog v-model="batchRateDialogVisible" title="批量设置价格倍率" width="90%" class="responsive-dialog">
       <el-form label-width="100px">
         <el-form-item label="选中用户">
           <div class="selected-users">
@@ -205,17 +208,17 @@
     </el-dialog>
 
     <!-- 用户使用统计弹窗 -->
-    <el-dialog v-model="usageDialogVisible" :title="`${usageUser?.username} 的使用统计`" width="90%" custom-class="dialog-large">
+    <el-dialog v-model="usageDialogVisible" :title="`${usageUser?.username} 的使用统计`" width="90%" class="responsive-dialog">
       <div v-loading="usageLoading">
         <!-- 统计概览 -->
         <el-row :gutter="16" class="usage-summary">
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-statistic title="总请求数" :value="usageSummary.totalRequests" />
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-statistic title="总 Token" :value="usageSummary.totalTokens" />
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-statistic title="总消费 ($)" :value="usageSummary.totalCost" :precision="4" />
           </el-col>
         </el-row>
@@ -285,7 +288,7 @@
     </el-dialog>
 
     <!-- API Key 管理弹窗 -->
-    <el-dialog v-model="apiKeyDialogVisible" :title="`${apiKeyUser?.username} 的 apikey`" width="90%" custom-class="dialog-large">
+    <el-dialog v-model="apiKeyDialogVisible" :title="`${apiKeyUser?.username} 的 apikey`" width="90%" class="responsive-dialog">
       <div class="apikey-header">
         <el-button type="primary" size="small" @click="showCreateAPIKeyDialog">
           <el-icon><Plus /></el-icon> 创建 apikey
@@ -347,7 +350,7 @@
     </el-dialog>
 
     <!-- 创建 API Key 弹窗 -->
-    <el-dialog v-model="createKeyDialogVisible" title="创建 apikey" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
+    <el-dialog v-model="createKeyDialogVisible" title="创建 apikey" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-form :model="createKeyForm" :rules="createKeyRules" ref="createKeyFormRef" label-position="top">
         <el-form-item label="名称" prop="name">
           <el-input v-model="createKeyForm.name" placeholder="为这个 Key 起个名字" />
@@ -391,7 +394,7 @@
     </el-dialog>
 
     <!-- 显示新创建的 API Key -->
-    <el-dialog v-model="showNewKeyDialog" title="API Key 已创建" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
+    <el-dialog v-model="showNewKeyDialog" title="API Key 已创建" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-alert type="info" :closable="false" style="margin-bottom: 16px">
         请妥善保存 API Key。您可以在 API Key 列表中随时查看和复制。
       </el-alert>
@@ -410,7 +413,7 @@
     </el-dialog>
 
     <!-- 用户套餐管理弹窗 -->
-    <el-dialog v-model="packageDialogVisible" :title="`${packageUser?.username} 的套餐`" width="90%" custom-class="dialog-large">
+    <el-dialog v-model="packageDialogVisible" :title="`${packageUser?.username} 的套餐`" width="90%" class="responsive-dialog">
       <div class="package-header">
         <el-button type="primary" size="small" @click="showAssignPackageDialog">
           <el-icon><Plus /></el-icon> 分配套餐
@@ -490,7 +493,7 @@
     </el-dialog>
 
     <!-- 分配套餐弹窗 -->
-    <el-dialog v-model="assignPackageDialogVisible" title="分配套餐" width="90%" custom-class="dialog-small" :close-on-click-modal="false">
+    <el-dialog v-model="assignPackageDialogVisible" title="分配套餐" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-form label-width="80px">
         <el-form-item label="选择套餐">
           <el-select v-model="selectedPackageId" style="width: 100%" placeholder="请选择套餐">
@@ -510,7 +513,7 @@
     </el-dialog>
 
     <!-- 编辑用户套餐弹窗 -->
-    <el-dialog v-model="editPackageDialogVisible" title="编辑用户套餐" width="90%" custom-class="dialog-large" :close-on-click-modal="false">
+    <el-dialog v-model="editPackageDialogVisible" title="编辑用户套餐" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-form :model="editPackageForm" label-width="100px">
         <el-form-item label="状态">
           <el-select v-model="editPackageForm.status" style="width: 100%">
@@ -533,17 +536,17 @@
         <template v-if="editPackageForm.type === 'subscription'">
           <el-divider content-position="left">周期额度限制 (0=不限)</el-divider>
           <el-row :gutter="16">
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="日限额($)">
                 <el-input-number v-model="editPackageForm.daily_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="周限额($)">
                 <el-input-number v-model="editPackageForm.weekly_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="月限额($)">
                 <el-input-number v-model="editPackageForm.monthly_quota" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
@@ -551,17 +554,17 @@
           </el-row>
           <el-divider content-position="left">当前周期已用 (可重置)</el-divider>
           <el-row :gutter="16">
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="日已用($)">
                 <el-input-number v-model="editPackageForm.daily_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="周已用($)">
                 <el-input-number v-model="editPackageForm.weekly_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8">
               <el-form-item label="月已用($)">
                 <el-input-number v-model="editPackageForm.monthly_used" :min="0" :precision="2" style="width: 100%" :controls-position="right" />
               </el-form-item>

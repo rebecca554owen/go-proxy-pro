@@ -5,15 +5,26 @@
  *   - 顶部用户信息栏
  *   - 内容区路由出口
  *   - 菜单折叠控制
- * 重要程度：⭐⭐⭐⭐ 重要（主布局框架）
+ *   - 移动端抽屉式菜单
+ * 重要程度：⭐⭐⭐⭐⭐ 核心（主布局框架 + 响应式）
  * 依赖模块：element-plus, vue-router, user store
 -->
 <template>
   <el-container class="layout-container">
+    <!-- 移动端遮罩 -->
+    <div
+      v-if="isMobile && sidebarVisible"
+      class="sidebar-overlay"
+      @click="sidebarVisible = false"
+    ></div>
+
     <!-- 侧边栏 -->
-    <el-aside :width="isCollapse ? '64px' : '200px'" class="layout-aside">
+    <el-aside
+      :width="isMobile ? '200px' : (isCollapse ? '64px' : '200px')"
+      :class="{ 'layout-aside': true, 'mobile-visible': sidebarVisible }"
+    >
       <div class="logo">
-        <span v-if="!isCollapse">AiProxy</span>
+        <span v-if="!isCollapse && !isMobile">AiProxy</span>
         <span v-else>AP</span>
       </div>
 
@@ -114,7 +125,12 @@
       <!-- 顶栏 -->
       <el-header class="layout-header">
         <div class="header-left">
-          <el-icon class="collapse-btn" @click="isCollapse = !isCollapse">
+          <!-- 移动端菜单按钮 -->
+          <el-icon v-if="isMobile" class="menu-btn" @click="sidebarVisible = !sidebarVisible">
+            <Menu />
+          </el-icon>
+          <!-- 桌面端折叠按钮 -->
+          <el-icon v-else class="collapse-btn" @click="isCollapse = !isCollapse">
             <Expand v-if="isCollapse" />
             <Fold v-else />
           </el-icon>
@@ -149,7 +165,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { prefetchChunk } from '@/prefetch'
@@ -159,6 +175,25 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const isCollapse = ref(false)
+const isMobile = ref(false)
+const sidebarVisible = ref(false)
+
+// 移动端检测
+function checkMobile() {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    sidebarVisible.value = false
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 function prefetchFor(path) {
   const loaders = {
@@ -201,7 +236,37 @@ function handleCommand(cmd) {
 
 .layout-aside {
   background-color: #304156;
-  transition: width 0.3s;
+  transition: width 0.3s, transform 0.3s;
+}
+
+/* 移动端侧边栏抽屉模式 */
+@media (max-width: 768px) {
+  .layout-aside {
+    position: fixed !important;
+    z-index: 2000;
+    height: 100vh;
+    transform: translateX(-100%);
+  }
+
+  .layout-aside.mobile-visible {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+  }
+
+  .menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 12px;
+  }
 }
 
 .logo {

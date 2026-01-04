@@ -6,6 +6,7 @@
  *   - 删除 API Key
  *   - 查看 API Key 使用情况
  * 重要程度：⭐⭐⭐⭐ 重要（用户核心功能）
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="my-api-keys">
@@ -18,7 +19,8 @@
 
     <!-- API Key 列表 -->
     <el-card shadow="hover">
-      <el-table :data="apiKeys" v-loading="loading" stripe>
+      <div class="table-responsive">
+        <el-table :data="apiKeys" v-loading="loading" stripe>
         <el-table-column prop="name" label="名称" min-width="120" />
         <el-table-column label="Key" min-width="180">
           <template #default="{ row }">
@@ -80,13 +82,14 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
       <el-empty v-if="!loading && apiKeys.length === 0" description="暂无 API Key">
         <el-button type="primary" @click="showCreateDialog = true">创建第一个 API Key</el-button>
       </el-empty>
     </el-card>
 
     <!-- 创建 API Key 对话框 -->
-    <el-dialog v-model="showCreateDialog" title="创建 API Key" width="500px">
+    <el-dialog v-model="showCreateDialog" title="创建 API Key" width="90%" class="responsive-dialog">
       <el-form :model="createForm" label-width="100px">
         <el-form-item label="名称" required>
           <el-input v-model="createForm.name" placeholder="请输入名称，如：开发测试" />
@@ -110,7 +113,7 @@
     </el-dialog>
 
     <!-- 新创建的 Key 显示对话框 -->
-    <el-dialog v-model="showNewKeyDialog" title="API Key 创建成功" width="500px" :close-on-click-modal="false">
+    <el-dialog v-model="showNewKeyDialog" title="API Key 创建成功" width="90%" class="responsive-dialog" :close-on-click-modal="false">
       <el-alert type="warning" :closable="false" style="margin-bottom: 16px">
         <template #title>
           <strong>请立即复制并保存此 API Key，关闭后将无法再次查看完整内容！</strong>
@@ -131,7 +134,7 @@
     </el-dialog>
 
     <!-- 使用详情对话框 -->
-    <el-dialog v-model="showUsageDialog" :title="`${selectedKey?.name} - 使用详情`" width="600px">
+    <el-dialog v-model="showUsageDialog" :title="`${selectedKey?.name} - 使用详情`" width="90%" class="responsive-dialog">
       <el-descriptions :column="2" border v-if="selectedKey">
         <el-descriptions-item label="名称">{{ selectedKey.name }}</el-descriptions-item>
         <el-descriptions-item label="状态">

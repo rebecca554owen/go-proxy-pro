@@ -191,7 +191,8 @@ curl http://localhost:8080/responses \
 
 ```
 AiProxy/
-├── cmd/server/          # 程序入口
+├── cmd/server/          # 程序入口（预留目录）
+├── main.go              # 程序入口文件
 ├── internal/
 │   ├── handler/         # HTTP 处理器
 │   ├── middleware/      # 中间件（JWT、API Key 认证等）

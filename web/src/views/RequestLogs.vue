@@ -7,6 +7,7 @@
  *   - Token和费用统计
  * 重要程度：⭐⭐⭐ 一般（日志查看）
  * 依赖模块：element-plus, api
+ * 响应式：支持移动端和桌面端
 -->
 <template>
   <div class="logs-page">
@@ -19,7 +20,7 @@
 
     <!-- 统计摘要 -->
     <el-row :gutter="20" class="summary-cards">
-      <el-col :span="6">
+      <el-col :xs="12" :sm="6">
         <el-card shadow="hover">
           <div class="stat-item">
             <div class="stat-value">{{ summary.total_requests || 0 }}</div>
@@ -27,7 +28,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="6">
         <el-card shadow="hover">
           <div class="stat-item">
             <div class="stat-value">{{ formatTokens(summary.total_tokens) }}</div>
@@ -35,7 +36,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="6">
         <el-card shadow="hover">
           <div class="stat-item cost">
             <div class="stat-value">${{ (summary.total_cost || 0).toFixed(4) }}</div>
@@ -43,7 +44,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="6">
         <el-card shadow="hover">
           <div class="stat-item">
             <div class="stat-value">{{ modelStats.length }}</div>
@@ -57,7 +58,8 @@
     <el-tabs v-model="activeTab">
       <!-- 每日汇总 -->
       <el-tab-pane label="每日汇总" name="daily">
-        <el-table :data="dailyStats" v-loading="loadingDaily" stripe>
+        <div class="table-responsive">
+          <el-table :data="dailyStats" v-loading="loadingDaily" stripe>
           <el-table-column prop="date" label="日期" width="120" />
           <el-table-column prop="request_count" label="请求数" width="100" />
           <el-table-column prop="total_tokens" label="Token" width="120">
@@ -71,12 +73,14 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
         <el-empty v-if="dailyStats.length === 0 && !loadingDaily" description="暂无数据" />
       </el-tab-pane>
 
       <!-- 模型统计 -->
       <el-tab-pane label="模型统计" name="models">
-        <el-table :data="modelStats" v-loading="loadingModels" stripe>
+        <div class="table-responsive">
+          <el-table :data="modelStats" v-loading="loadingModels" stripe>
           <el-table-column prop="model" label="模型" min-width="200" />
           <el-table-column prop="request_count" label="请求数" width="100" />
           <el-table-column prop="total_tokens" label="Token" width="120">
@@ -90,12 +94,13 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
         <el-empty v-if="modelStats.length === 0 && !loadingModels" description="暂无数据" />
       </el-tab-pane>
 
       <!-- 用户详细记录 -->
       <el-tab-pane label="用户详细记录" name="records">
-        <el-form :inline="true" style="margin-bottom: 16px">
+        <el-form :inline="true" class="flex-responsive" style="margin-bottom: 16px">
           <el-form-item label="选择用户">
             <el-select v-model="selectedUserId" clearable placeholder="选择用户" @change="handleUserChange" filterable style="width: 160px">
               <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
@@ -128,7 +133,8 @@
           请选择用户查看详细记录
         </el-alert>
 
-        <el-table v-if="selectedUserId" :data="records" v-loading="loadingRecords" stripe>
+        <div v-if="selectedUserId" class="table-responsive">
+          <el-table :data="records" v-loading="loadingRecords" stripe>
           <el-table-column prop="model" label="模型" min-width="180" show-overflow-tooltip />
           <el-table-column prop="request_ip" label="请求IP" width="120" show-overflow-tooltip />
           <el-table-column label="输入" width="80">
@@ -171,6 +177,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <div class="pagination-wrap" v-if="selectedUserId && pagination.total > 0">
           <el-pagination
